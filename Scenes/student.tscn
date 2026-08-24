@@ -4,8 +4,9 @@
 [ext_resource type="Texture2D" uid="uid://bjatksqobhied" path="res://Images/circle.png" id="1_aycnr"]
 [ext_resource type="Texture2D" uid="uid://cpnh88txrpqsf" path="res://Images/eye.png" id="2_5fjsm"]
 [ext_resource type="Texture2D" uid="uid://dnrstcbckptok" path="res://Images/pupil.png" id="3_v7y4v"]
-[ext_resource type="Texture2D" uid="uid://cm8ppulp7la1d" path="res://Images/desk_with_paper.png" id="5_1ghxo"]
 [ext_resource type="Texture2D" uid="uid://c0g7c7tflduor" path="res://Images/mouth.png" id="5_yj8rq"]
+[ext_resource type="Texture2D" uid="uid://s4uorxip2gpy" path="res://Images/desk.png" id="6_yw8td"]
+[ext_resource type="Texture2D" uid="uid://e2dd0g1cx2q1" path="res://Images/test.png" id="7_hmaxr"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v7y4v"]
 radius = 65.23228
@@ -66,9 +67,15 @@ position = Vector2(10, -4)
 [node name="Sprite2D" type="Sprite2D" parent="FullHead/Head" unique_id=1815252956]
 texture = ExtResource("5_yj8rq")
 
-[node name="Desk" type="Sprite2D" parent="." unique_id=752723861]
+[node name="FullDesk" type="Node2D" parent="." unique_id=1616577547]
+
+[node name="Desk" type="Sprite2D" parent="FullDesk" unique_id=752723861]
 position = Vector2(64, 164)
-texture = ExtResource("5_1ghxo")
+texture = ExtResource("6_yw8td")
+
+[node name="Test" type="Sprite2D" parent="FullDesk" unique_id=1201819442]
+position = Vector2(64, 164)
+texture = ExtResource("7_hmaxr")
 
 [node name="Timer" type="Timer" parent="." unique_id=972490081]
 one_shot = true

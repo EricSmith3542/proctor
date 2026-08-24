@@ -57,6 +57,7 @@ func look_down():
 func mark_absent():
 	is_present = false
 	$FullHead.hide()
+	$FullDesk/Test.hide()
 
 #func _on_area_2d_mouse_entered() -> void:
 	#print("hovering")

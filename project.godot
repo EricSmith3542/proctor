@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 SoundManager="*uid://bhm63v7e41qmo"
 UnlockTracker="*uid://tnptjr1gsrj4"
+GameQuitter="*uid://pwlwp6pkytvn"
 
 [display]
 

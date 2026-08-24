@@ -41,11 +41,14 @@ func make_students():
 	#	Determine left right padding for student placement
 	#	Desk columns * 2 - 1 to account for vertical walk ways
 	var total_horizontal_space = (cols_of_desks*2 - 1) * STUDENT_WIDTH
-	var padding = (area_bounds.x - total_horizontal_space)/2
+	var padding_x = (area_bounds.x - total_horizontal_space)/2
+	
+	var total_vertical_space = rows_of_desks * STUDENT_HEIGHT
+	var padding_y = (area_bounds.y - total_vertical_space)/2
 	
 	#	Place student scenes
-	var current_x_pos = padding
-	var current_y_pos = 0
+	var current_x_pos = padding_x
+	var current_y_pos = padding_y
 	for row in range(rows_of_desks):
 		for col in range(cols_of_desks):
 			var student = STUDENT.instantiate()
@@ -53,7 +56,7 @@ func make_students():
 			$StudentContainer.add_child(student)
 			current_x_pos += STUDENT_WIDTH*2
 		current_y_pos += STUDENT_HEIGHT
-		current_x_pos = padding
+		current_x_pos = padding_x
 	
 	#	Remove students to match number_of_students
 	var remaining_indices = range(rows_of_desks * cols_of_desks)

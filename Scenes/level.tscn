@@ -27,6 +27,19 @@ offset_bottom = 1063.0
 scale = Vector2(1.4110129, 1.5892743)
 text = "Successful Cheats: "
 
+[node name="FailureText" type="Label" parent="." unique_id=2005486164]
+visible = false
+offset_left = 776.00006
+offset_top = 432.00006
+offset_right = 989.00006
+offset_bottom = 520.00006
+scale = Vector2(1.4110129, 1.5892743)
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 64
+text = "FAILED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="CheatsCountText" type="Label" parent="." unique_id=250890592]
 offset_left = 1864.0001
 offset_top = 1040.0001

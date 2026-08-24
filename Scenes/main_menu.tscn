@@ -5,12 +5,37 @@
 [node name="MainMenu" type="Node2D" unique_id=205762623]
 script = ExtResource("1_28flt")
 
-[node name="Button" type="Button" parent="." unique_id=292781704]
+[node name="LevelButtons" type="Control" parent="." unique_id=805590929]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Button1" type="Button" parent="LevelButtons" unique_id=292781704]
+layout_mode = 0
 offset_left = 816.00006
 offset_top = 447.99997
-offset_right = 862.00006
+offset_right = 878.00006
 offset_bottom = 478.99997
 scale = Vector2(3.8354537, 3.7113302)
-text = "Start"
+text = "Level 1"
 
-[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[node name="Button2" type="Button" parent="LevelButtons" unique_id=1635962677]
+layout_mode = 0
+offset_left = 816.00006
+offset_top = 584.0
+offset_right = 878.00006
+offset_bottom = 615.0
+scale = Vector2(3.8354537, 3.7113302)
+disabled = true
+text = "Level 2"
+
+[node name="Button3" type="Button" parent="LevelButtons" unique_id=613800575]
+layout_mode = 0
+offset_left = 816.00006
+offset_top = 720.0
+offset_right = 878.00006
+offset_bottom = 751.0
+scale = Vector2(3.8354537, 3.7113302)
+disabled = true
+text = "Level 3"

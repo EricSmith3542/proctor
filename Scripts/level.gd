@@ -13,8 +13,24 @@ extends Node2D
 @onready var classroom := $Classroom
 @onready var second_timer := $ExamSecondTimer
 
+@export var level_number := 1
 @export var exam_time_seconds := 60
 var remaining_exam_time := exam_time_seconds
+
+var completing_level := false
+
+signal level_complete(level_number)
+
+func _ready() -> void:
+	find_and_connect_unlock_tracker()
+
+func find_and_connect_unlock_tracker():
+	var nodes = get_tree().get_nodes_in_group("UnlockTracker")
+	if nodes.size() > 0:
+		var unlock_tracker = nodes[0]
+		level_complete.connect(unlock_tracker._on_level_complete)
+	else:
+		print("NO UNLOCK TRACKER FOUND")
 
 func _on_level_failed():
 	fail_text.visible = true
@@ -58,7 +74,9 @@ func _on_exam_second_timer_timeout() -> void:
 	remaining_exam_time -= 1
 	if remaining_exam_time >= 0:
 		set_timer_text(remaining_exam_time)
-	else:
+	elif not completing_level:
+		completing_level = true
+		level_complete.emit(level_number)
 		win_text.visible = true
 		await get_tree().create_timer(2).timeout
 		get_tree().change_scene_to_file("res://Scenes/main_menu.tscn")

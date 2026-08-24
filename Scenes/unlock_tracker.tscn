@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://tnptjr1gsrj4"]
+
+[ext_resource type="Script" uid="uid://bo75yocpxegpw" path="res://Scripts/unlock_tracker.gd" id="1_tq4pf"]
+
+[node name="UnlockTracker" type="Node2D" unique_id=983374975]
+script = ExtResource("1_tq4pf")

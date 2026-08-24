@@ -6,6 +6,7 @@ const STUDENT_WIDTH = 128
 const STUDENT_HEIGHT = 200
 const SAFE_ACTIONS = [0, 1]
 
+signal exam_started
 signal level_failed
 signal successful_cheat_update(cheat_count)
 signal failed_accusation_update(accusation_count)
@@ -28,7 +29,6 @@ var false_accusations = 0
 func _ready() -> void:
 	super()
 	make_students()
-	start_exam()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -68,9 +68,13 @@ func make_students():
 		if i not in present_indices:
 			student.mark_absent()
 		else:
-			student.index = i
-			student.accused_of_cheating.connect(_on_student_accused.bind(i))
-			student.get_node("Timer").timeout.connect(_on_student_requests_action.bind(student))
+			prepare_student(student, i)
+			
+func prepare_student(student, index):
+	student.index = index
+	student.accused_of_cheating.connect(_on_student_accused.bind(index))
+	student.get_node("Timer").timeout.connect(_on_student_requests_action.bind(student))
+	student.look_forward()
 
 func start_exam():
 	# TODO: post mvp this is where you would trigger picking up pencils
@@ -84,7 +88,6 @@ func start_action_random_wait(student, action, fixed_cheat_time = true):
 	if is_student_cheating(student, action):
 		active_cheaters[student.index] = action
 		if fixed_cheat_time:
-			print("using fixed cheat time")
 			student.perform_action(action, fixed_cheat_time_seconds)
 			return
 	student.perform_action(action, get_random_wait_seconds())
@@ -116,7 +119,6 @@ func get_student_by_index(index):
 	
 func get_random_wait_seconds() -> float:
 	var rand_seconds = randf_range(1,max_random_wait_seconds)
-	print(rand_seconds)
 	return randf_range(1,max_random_wait_seconds)
 	
 func is_student_cheating(student, action):

@@ -23,16 +23,6 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
-	
-func _input(event):
-	if event.is_action_pressed("ui_left"):
-		look_left()
-	if event.is_action_pressed("ui_right"):
-		look_right()
-	if event.is_action_pressed("ui_down"):
-		look_down()
-	if event.is_action_pressed("ui_up"):
-		look_forward()
 		
 func perform_action(action_number, new_action_request_time):
 	match(action_number):
@@ -68,11 +58,11 @@ func mark_absent():
 	is_present = false
 	$FullHead.hide()
 
-func _on_area_2d_mouse_entered() -> void:
-	print("hovering")
-	
-func _on_area_2d_mouse_exited() -> void:
-	print("hover exit")
+#func _on_area_2d_mouse_entered() -> void:
+	#print("hovering")
+	#
+#func _on_area_2d_mouse_exited() -> void:
+	#print("hover exit")
 
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:

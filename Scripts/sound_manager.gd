@@ -11,12 +11,12 @@ func _on_request_sound(sound):
 	var new_player = create_stream_player()
 	set_and_connect_player(new_player, sound)
 	new_player.play()
-	print("New Player started. Total Players: ", get_child_count())
+	#print("New Player started. Total Players: ", get_child_count())
 	
 func _on_player_finished(player):
 	remove_child(player)
 	player.queue_free()
-	print("Player finished and deleted. Total Players: ", get_child_count())
+	#print("Player finished and deleted. Total Players: ", get_child_count())
 
 func create_stream_player() -> AudioStreamPlayer2D:
 	var player = AudioStreamPlayer2D.new()

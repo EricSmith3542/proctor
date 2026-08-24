@@ -76,13 +76,15 @@ func start_exam():
 			start_action_random_wait(student, 0)
 
 func start_action_random_wait(student, action):
-	student.perform_action(action, randf_range(1,max_random_wait_seconds))
+	if is_student_cheating(student, action):
+		active_cheaters[student.index] = action
+	student.perform_action(action, get_random_wait_seconds())
 
 func start_random_action_random_wait(student):
-	var random_action = range(4).pick_random()
-	if random_action not in SAFE_ACTIONS:
+	var random_action = range(Student.Actions.size()).pick_random()
+	if is_student_cheating(student, random_action):
 		active_cheaters[student.index] = random_action
-	student.perform_action(random_action, randf_range(1,max_random_wait_seconds))
+	student.perform_action(random_action, get_random_wait_seconds())
 	
 func increment_cheat_count():
 	successful_cheats += 1
@@ -99,6 +101,31 @@ func handle_if_cheating(student):
 		
 func get_student_by_index(index):
 	return $StudentContainer.get_child(index)
+	
+func get_random_wait_seconds() -> float:
+	var rand_seconds = randf_range(1,max_random_wait_seconds)
+	print(rand_seconds)
+	return randf_range(1,max_random_wait_seconds)
+	
+func is_student_cheating(student, action):
+	match(action):
+		Student.Actions.LOOK_DOWN, Student.Actions.LOOK_FORWARD:
+			return false
+		Student.Actions.LOOK_LEFT:
+			if student.index % cols_of_desks == 0:
+				return false
+			if not get_student_by_index(student.index - 1).is_present:
+				return false
+			print("Student ", student.index, " attempting cheat with look_left")
+			return true
+		Student.Actions.LOOK_RIGHT:
+			if student.index % cols_of_desks == cols_of_desks - 1:
+				return false
+			if not get_student_by_index(student.index + 1).is_present:
+				return false
+			print("Student ", student.index, " attempting cheat with look_right")
+			return true
+		
 
 func _on_student_requests_action(student):
 	handle_if_cheating(student)

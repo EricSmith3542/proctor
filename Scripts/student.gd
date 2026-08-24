@@ -9,6 +9,8 @@ extends SoundPlayer
 @onready var look_right_pos = $FullHead/Head/RightLookLocation.position
 @onready var look_forward_pos = $FullHead/Head/ForwardLookLocation.position
 
+enum Actions {LOOK_DOWN, LOOK_FORWARD, LOOK_LEFT, LOOK_RIGHT}
+
 signal accused_of_cheating()
 
 var is_present = true
@@ -34,13 +36,13 @@ func _input(event):
 		
 func perform_action(action_number, new_action_request_time):
 	match(action_number):
-		0:
+		Actions.LOOK_DOWN:
 			look_down()
-		1:
+		Actions.LOOK_FORWARD:
 			look_forward()
-		2:
+		Actions.LOOK_LEFT:
 			look_left()
-		3:
+		Actions.LOOK_RIGHT:
 			look_right()
 	$Timer.start(new_action_request_time)
 	request_sound.emit(SoundManager.TEST)

@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Proctor"
-run/main_scene="uid://eqdt8ag4c0cg"
+run/main_scene="uid://b2ky2b2ksgs2k"
 config/features=PackedStringArray("4.6", "Forward Plus")
 config/icon="res://icon.svg"
 

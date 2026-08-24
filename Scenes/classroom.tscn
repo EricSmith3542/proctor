@@ -18,3 +18,47 @@ position = Vector2(960, 540)
 shape = SubResource("RectangleShape2D_fh6w7")
 
 [node name="StudentContainer" type="Node2D" parent="." unique_id=372732600]
+
+[node name="Button" type="Button" parent="." unique_id=1571500061]
+offset_top = 1024.0
+offset_right = 45.0
+offset_bottom = 1055.0
+scale = Vector2(1.6648053, 1.7083713)
+text = "Back
+"
+
+[node name="CheatsText" type="Label" parent="." unique_id=1756217040]
+offset_left = 1656.0
+offset_top = 1040.0
+offset_right = 1802.0
+offset_bottom = 1063.0
+scale = Vector2(1.4110129, 1.5892743)
+text = "Successful Cheats: "
+
+[node name="CheatsCountText" type="Label" parent="." unique_id=1675903469]
+offset_left = 1864.0001
+offset_top = 1040.0001
+offset_right = 2010.0001
+offset_bottom = 1089.0001
+scale = Vector2(1.4110129, 1.5892743)
+text = "0
+"
+
+[node name="FalseAccusationText" type="Label" parent="." unique_id=1401944137]
+offset_left = 1232.0
+offset_top = 1040.0
+offset_right = 1378.0
+offset_bottom = 1063.0
+scale = Vector2(1.4110129, 1.5892743)
+text = "False Accusations: "
+
+[node name="FalseAccusationCountText" type="Label" parent="." unique_id=303053988]
+offset_left = 1440.0001
+offset_top = 1040.0001
+offset_right = 1586.0001
+offset_bottom = 1089.0001
+scale = Vector2(1.4110129, 1.5892743)
+text = "0
+"
+
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]

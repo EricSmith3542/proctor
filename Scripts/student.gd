@@ -13,6 +13,7 @@ signal accused_of_cheating()
 signal request_sound(sound_name)
 
 var is_present = true
+var index = -1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -67,10 +68,10 @@ func mark_absent():
 	$FullHead.hide()
 
 func _on_area_2d_mouse_entered() -> void:
-	look_forward()
+	print("hovering")
 	
 func _on_area_2d_mouse_exited() -> void:
-	look_down()
+	print("hover exit")
 
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:

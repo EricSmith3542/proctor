@@ -18,6 +18,7 @@ var false_accusations = 0
 @export_range(1, 100, 1) var cols_of_desks : int = 3
 
 @export var max_random_wait_seconds = 60
+@export var fixed_cheat_time_seconds = 5
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -75,16 +76,18 @@ func start_exam():
 		if student.is_present:
 			start_action_random_wait(student, 0)
 
-func start_action_random_wait(student, action):
+func start_action_random_wait(student, action, fixed_cheat_time = true):
 	if is_student_cheating(student, action):
 		active_cheaters[student.index] = action
+		if fixed_cheat_time:
+			print("using fixed cheat time")
+			student.perform_action(action, fixed_cheat_time_seconds)
+			return
 	student.perform_action(action, get_random_wait_seconds())
 
-func start_random_action_random_wait(student):
+func start_random_action_random_wait(student, fixed_cheat_time = true):
 	var random_action = range(Student.Actions.size()).pick_random()
-	if is_student_cheating(student, random_action):
-		active_cheaters[student.index] = random_action
-	student.perform_action(random_action, get_random_wait_seconds())
+	start_action_random_wait(student, random_action, fixed_cheat_time)
 	
 func increment_cheat_count():
 	successful_cheats += 1
@@ -98,6 +101,9 @@ func handle_if_cheating(student):
 	if active_cheaters.has(student.index):
 		print("Student ", student.index, " cheated with action ", active_cheaters[student.index])
 		increment_cheat_count()
+		active_cheaters.erase(student.index)
+		return true
+	return false
 		
 func get_student_by_index(index):
 	return $StudentContainer.get_child(index)
@@ -128,8 +134,10 @@ func is_student_cheating(student, action):
 		
 
 func _on_student_requests_action(student):
-	handle_if_cheating(student)
-	start_random_action_random_wait(student)
+	if handle_if_cheating(student):
+		start_action_random_wait(student, Student.Actions.LOOK_DOWN)
+	else:
+		start_random_action_random_wait(student)
 
 func _on_student_accused(index):
 	if active_cheaters.has(index):

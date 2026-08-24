@@ -1,0 +1,20 @@
+[gd_scene format=3 uid="uid://eqdt8ag4c0cg"]
+
+[ext_resource type="Script" uid="uid://d1u7uk2bj5h05" path="res://Scripts/classroom.gd" id="1_fh6w7"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fh6w7"]
+size = Vector2(1920, 1080)
+
+[node name="Classroom" type="Node2D" unique_id=1353106248]
+script = ExtResource("1_fh6w7")
+number_of_students = 1000
+rows_of_desks = 5
+cols_of_desks = 8
+
+[node name="StudentArea" type="Area2D" parent="." unique_id=1347603306]
+position = Vector2(960, 540)
+
+[node name="StudentAreaShape" type="CollisionShape2D" parent="StudentArea" unique_id=991561952]
+shape = SubResource("RectangleShape2D_fh6w7")
+
+[node name="StudentContainer" type="Node2D" parent="." unique_id=372732600]

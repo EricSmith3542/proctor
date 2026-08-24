@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://ddoslsch85hp4"]
+
+[ext_resource type="Script" uid="uid://bv7pdf45kb54l" path="res://Scripts/student.gd" id="1_5fjsm"]
+[ext_resource type="Texture2D" uid="uid://bjatksqobhied" path="res://Images/circle.png" id="1_aycnr"]
+[ext_resource type="Texture2D" uid="uid://cpnh88txrpqsf" path="res://Images/eye.png" id="2_5fjsm"]
+[ext_resource type="Texture2D" uid="uid://dnrstcbckptok" path="res://Images/pupil.png" id="3_v7y4v"]
+[ext_resource type="Texture2D" uid="uid://cm8ppulp7la1d" path="res://Images/desk_with_paper.png" id="5_1ghxo"]
+[ext_resource type="Texture2D" uid="uid://c0g7c7tflduor" path="res://Images/mouth.png" id="5_yj8rq"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_v7y4v"]
+radius = 65.23228
+
+[node name="Student" type="Node2D" unique_id=259037794]
+script = ExtResource("1_5fjsm")
+
+[node name="FullHead" type="Node2D" parent="." unique_id=1741052483]
+
+[node name="Area2D" type="Area2D" parent="FullHead" unique_id=873126445]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="FullHead/Area2D" unique_id=1957302086]
+position = Vector2(64, 64.5)
+shape = SubResource("CircleShape2D_v7y4v")
+
+[node name="Head" type="Sprite2D" parent="FullHead" unique_id=358801429]
+position = Vector2(64, 64)
+texture = ExtResource("1_aycnr")
+
+[node name="Full Left Eye" type="Node2D" parent="FullHead/Head" unique_id=137908848]
+position = Vector2(-584, -299)
+
+[node name="LeftEye" type="Sprite2D" parent="FullHead/Head/Full Left Eye" unique_id=1028258286]
+z_index = 1
+position = Vector2(584, 299)
+texture = ExtResource("2_5fjsm")
+
+[node name="LeftPupil" type="Sprite2D" parent="FullHead/Head/Full Left Eye" unique_id=1469785226]
+z_index = 2
+position = Vector2(584, 299)
+texture = ExtResource("3_v7y4v")
+
+[node name="Full Right Eye" type="Node2D" parent="FullHead/Head" unique_id=1013599402]
+position = Vector2(-584, -299)
+
+[node name="RightEye" type="Sprite2D" parent="FullHead/Head/Full Right Eye" unique_id=704931078]
+z_index = 1
+position = Vector2(640, 299)
+texture = ExtResource("2_5fjsm")
+
+[node name="RightPupil" type="Sprite2D" parent="FullHead/Head/Full Right Eye" unique_id=1849101600]
+z_index = 2
+position = Vector2(640, 299)
+texture = ExtResource("3_v7y4v")
+
+[node name="LeftLookLocation" type="Node2D" parent="FullHead/Head" unique_id=1930811695]
+visible = false
+position = Vector2(-10, -4)
+
+[node name="ForwardLookLocation" type="Node2D" parent="FullHead/Head" unique_id=962940856]
+visible = false
+position = Vector2(0, -5)
+
+[node name="RightLookLocation" type="Node2D" parent="FullHead/Head" unique_id=1978359013]
+visible = false
+position = Vector2(10, -4)
+
+[node name="Sprite2D" type="Sprite2D" parent="FullHead/Head" unique_id=1815252956]
+texture = ExtResource("5_yj8rq")
+
+[node name="Desk" type="Sprite2D" parent="." unique_id=752723861]
+position = Vector2(64, 164)
+texture = ExtResource("5_1ghxo")
+
+[node name="Timer" type="Timer" parent="." unique_id=972490081]
+one_shot = true
+
+[connection signal="input_event" from="FullHead/Area2D" to="." method="_on_area_2d_input_event"]
+[connection signal="mouse_entered" from="FullHead/Area2D" to="." method="_on_area_2d_mouse_entered"]
+[connection signal="mouse_exited" from="FullHead/Area2D" to="." method="_on_area_2d_mouse_exited"]

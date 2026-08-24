@@ -1,5 +1,5 @@
 class_name Student
-extends Node2D
+extends SoundPlayer
 
 @onready var left_pupil = $"FullHead/Head/Full Left Eye/LeftPupil"
 @onready var right_pupil = $"FullHead/Head/Full Right Eye/RightPupil"
@@ -10,14 +10,13 @@ extends Node2D
 @onready var look_forward_pos = $FullHead/Head/ForwardLookLocation.position
 
 signal accused_of_cheating()
-signal request_sound(sound_name)
 
 var is_present = true
 var index = -1
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass # Replace with function body.
+	super()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -44,7 +43,7 @@ func perform_action(action_number, new_action_request_time):
 		3:
 			look_right()
 	$Timer.start(new_action_request_time)
-	request_sound.emit("test")
+	request_sound.emit(SoundManager.TEST)
 		
 		
 func look_left():

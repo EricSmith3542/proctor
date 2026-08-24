@@ -1,5 +1,5 @@
 class_name Classroom
-extends Node2D
+extends SoundPlayer
 
 const STUDENT = preload("res://Scenes/student.tscn")
 const STUDENT_WIDTH = 128
@@ -14,13 +14,14 @@ var false_accusations = 0
 @export var number_of_students = 8
 
 #Softcap of 5x8
-@export_range(1, 5, 1) var rows_of_desks : int = 3
-@export_range(1, 8, 1) var cols_of_desks : int = 3
+@export_range(1, 100, 1) var rows_of_desks : int = 3
+@export_range(1, 100, 1) var cols_of_desks : int = 3
 
 @export var max_random_wait_seconds = 60
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	super()
 	make_students()
 	start_exam()
 
@@ -71,7 +72,8 @@ func start_exam():
 	
 	#Start random actions
 	for student in $StudentContainer.get_children():
-		start_action_random_wait(student, 0)
+		if student.is_present:
+			start_action_random_wait(student, 0)
 
 func start_action_random_wait(student, action):
 	student.perform_action(action, randf_range(1,max_random_wait_seconds))

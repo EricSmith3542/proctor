@@ -6,6 +6,10 @@ const STUDENT_WIDTH = 128
 const STUDENT_HEIGHT = 200
 const SAFE_ACTIONS = [0, 1]
 
+signal level_failed
+signal successful_cheat_update(cheat_count)
+signal failed_accusation_update(accusation_count)
+
 var present_indices = []
 var active_cheaters = {}
 var successful_cheats = 0
@@ -91,11 +95,13 @@ func start_random_action_random_wait(student, fixed_cheat_time = true):
 	
 func increment_cheat_count():
 	successful_cheats += 1
-	$CheatsCountText.text = str(successful_cheats)
+	successful_cheat_update.emit(successful_cheats)
+	check_for_fail()
 	
 func increment_false_accusations():
 	false_accusations += 1
-	$FalseAccusationCountText.text = str(false_accusations)
+	failed_accusation_update.emit(false_accusations)
+	check_for_fail()
 
 func handle_if_cheating(student):
 	if active_cheaters.has(student.index):
@@ -131,7 +137,10 @@ func is_student_cheating(student, action):
 				return false
 			print("Student ", student.index, " attempting cheat with look_right")
 			return true
-		
+
+func check_for_fail():
+	if false_accusations + successful_cheats >= 3:
+		level_failed.emit()
 
 func _on_student_requests_action(student):
 	if handle_if_cheating(student):
@@ -147,6 +156,3 @@ func _on_student_accused(index):
 	else:
 		print("Falsely accused student ", index, " of cheating")
 		increment_false_accusations()
-
-func _on_button_pressed() -> void:
-	get_tree().change_scene_to_file("res://Scenes/main_menu.tscn")

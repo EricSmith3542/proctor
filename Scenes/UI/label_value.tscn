@@ -1,0 +1,23 @@
+[gd_scene format=3 uid="uid://dyysboctq0rq3"]
+
+[ext_resource type="Script" uid="uid://byewa70edr0lo" path="res://Scripts/label_value.gd" id="1_tarom"]
+[ext_resource type="LabelSettings" uid="uid://bu720xe7w6nlc" path="res://Label Settings/StatsLabel.tres" id="2_fv2hh"]
+
+[node name="LabelValue" type="HFlowContainer" unique_id=415594183]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+script = ExtResource("1_tarom")
+
+[node name="Label" type="Label" parent="." unique_id=532047396]
+layout_mode = 2
+text = "Value:"
+label_settings = ExtResource("2_fv2hh")
+
+[node name="Value" type="Label" parent="." unique_id=1704224946]
+layout_mode = 2
+text = "0"
+label_settings = ExtResource("2_fv2hh")

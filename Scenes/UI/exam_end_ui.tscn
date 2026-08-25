@@ -1,0 +1,39 @@
+[gd_scene format=3 uid="uid://bs8xvdc3o1ems"]
+
+[ext_resource type="Script" uid="uid://xmxagxq1sjc0" path="res://Scenes/UI/exam_end_ui.gd" id="1_3ivnl"]
+[ext_resource type="LabelSettings" uid="uid://ddynwty7gskmn" path="res://Label Settings/ExamCompleteLabel.tres" id="1_wb1sy"]
+[ext_resource type="PackedScene" uid="uid://dyysboctq0rq3" path="res://Scenes/UI/label_value.tscn" id="2_3ivnl"]
+
+[node name="ExamEndUI" type="VFlowContainer" unique_id=375763521]
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -241.5
+offset_right = 241.5
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+script = ExtResource("1_3ivnl")
+
+[node name="WinLoseLabel" type="Label" parent="." unique_id=44416687]
+layout_mode = 2
+text = "Exam Complete"
+label_settings = ExtResource("1_wb1sy")
+
+[node name="CheatsStoppedLabel" parent="." unique_id=415594183 instance=ExtResource("2_3ivnl")]
+layout_mode = 2
+label_text = "Cheats Stopped:     "
+
+[node name="FalseAccusationsLabel" parent="." unique_id=302643249 instance=ExtResource("2_3ivnl")]
+layout_mode = 2
+label_text = "False Accusations: "
+
+[node name="CheatSuccessLabel" parent="." unique_id=1294285022 instance=ExtResource("2_3ivnl")]
+layout_mode = 2
+label_text = "Successful Cheats: "
+
+[node name="ContinueButton" type="Button" parent="." unique_id=2128938747]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Continue"

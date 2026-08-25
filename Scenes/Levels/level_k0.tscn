@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://cove0xtlfo7l0"]
+
+[ext_resource type="PackedScene" uid="uid://cwey3ecvqmnko" path="res://Scenes/Levels/level_base.tscn" id="1_eul71"]
+
+[node name="Level" unique_id=2072235442 instance=ExtResource("1_eul71")]
+level_number = 0
+
+[node name="Classroom" parent="." index="0" unique_id=1353106248]
+number_of_students = 3
+cols_of_desks = 3

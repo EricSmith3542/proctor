@@ -36,6 +36,9 @@ func perform_action(action_number, new_action_request_time):
 			look_right()
 	$Timer.start(new_action_request_time)
 	request_sound.emit(SoundManager.TEST_L, $FullHead/Head.global_position)
+	
+func stop_performing_actions():
+	$Timer.stop()
 		
 		
 func look_left():

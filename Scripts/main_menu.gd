@@ -35,7 +35,7 @@ func previous_grade_letter(letter):
 	return GRADE_LEVEL_LETTERS[GRADE_LEVEL_LETTERS.find(letter)-1]
 
 func _on_button_pressed(level_key) -> void:
-	get_tree().change_scene_to_file("res://Scenes/Levels/level"+str(level_key)+".tscn")
+	get_tree().change_scene_to_file("res://Scenes/Levels/level_"+str(level_key)+".tscn")
 
 func _on_play_button_pressed() -> void:
 	$CanvasLayer/TitleUI.hide()

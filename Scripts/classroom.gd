@@ -7,8 +7,11 @@ const STUDENT_HEIGHT = 200
 const SAFE_ACTIONS = [0, 1]
 
 signal level_failed
+signal cheat_stopped
 signal successful_cheat_update(cheat_count)
 signal failed_accusation_update(accusation_count)
+
+@onready var student_container = $StudentContainer
 
 var present_indices = []
 var active_cheaters = {}
@@ -53,7 +56,7 @@ func make_students():
 		for col in range(cols_of_desks):
 			var student = STUDENT.instantiate()
 			student.position = position + Vector2(current_x_pos, current_y_pos)
-			$StudentContainer.add_child(student)
+			student_container.add_child(student)
 			current_x_pos += STUDENT_WIDTH*2
 		current_y_pos += STUDENT_HEIGHT
 		current_x_pos = padding_x
@@ -66,8 +69,8 @@ func make_students():
 		remaining_indices.remove_at(remaining_indices.find(random_pick))
 		present_indices.append(random_pick)
 	
-	for i in range($StudentContainer.get_children().size()):
-		var student = $StudentContainer.get_child(i)
+	for i in range(student_container.get_children().size()):
+		var student = student_container.get_child(i)
 		if i not in present_indices:
 			student.mark_absent()
 		else:
@@ -78,13 +81,15 @@ func prepare_student(student, index):
 	student.accused_of_cheating.connect(_on_student_accused.bind(index))
 	student.get_node("Timer").timeout.connect(_on_student_requests_action.bind(student))
 	student.look_forward()
+	start_random_action_random_wait(student)
 
 func start_exam():
 	# TODO: post mvp this is where you would trigger picking up pencils
 	exam_in_progress = true
 	#Start random actions
-	for student in $StudentContainer.get_children():
+	for student in student_container.get_children():
 		if student.is_present:
+			student.stop_performing_actions()
 			start_action_random_wait(student, 0)
 
 func start_action_random_wait(student, action, fixed_cheat_time = true):
@@ -97,7 +102,7 @@ func start_action_random_wait(student, action, fixed_cheat_time = true):
 
 func start_random_action_random_wait(student, fixed_cheat_time = true):
 	var random_action = range(Student.Actions.size()).pick_random()
-	start_action_random_wait(student, random_action, fixed_cheat_time)
+	start_action_random_wait(student, random_action, exam_in_progress and fixed_cheat_time)
 	
 func increment_cheat_count():
 	successful_cheats += 1
@@ -118,13 +123,16 @@ func handle_if_cheating(student):
 	return false
 		
 func get_student_by_index(index):
-	return $StudentContainer.get_child(index)
+	return student_container.get_child(index)
 	
 func get_random_wait_seconds() -> float:
 	var rand_seconds = randf_range(1,max_random_wait_seconds)
 	return randf_range(1,max_random_wait_seconds)
 	
 func is_student_cheating(student, action):
+	if not exam_in_progress:
+		return false
+		
 	match(action):
 		Student.Actions.LOOK_DOWN, Student.Actions.LOOK_FORWARD:
 			return false
@@ -145,7 +153,20 @@ func is_student_cheating(student, action):
 
 func check_for_fail():
 	if false_accusations + successful_cheats >= 3:
-		level_failed.emit()
+		enter_fail_state()
+		
+func enter_fail_state():
+	exam_in_progress = false
+	stop_all_student_actions()
+	level_failed.emit()
+	
+func enter_win_state():
+	exam_in_progress = false
+	stop_all_student_actions()
+
+func stop_all_student_actions():
+	for student in student_container.get_children():
+		student.stop_performing_actions()
 
 func _on_student_requests_action(student):
 	if handle_if_cheating(student):
@@ -158,6 +179,7 @@ func _on_student_accused(index):
 		return
 		
 	if active_cheaters.has(index):
+		cheat_stopped.emit()
 		print("Stopped student ", index, " from cheating")
 		active_cheaters.erase(index)
 		start_action_random_wait(get_student_by_index(index), 0)

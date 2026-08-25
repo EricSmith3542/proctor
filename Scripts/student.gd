@@ -59,11 +59,11 @@ func mark_absent():
 	$FullHead.hide()
 	$FullDesk/Test.hide()
 
-#func _on_area_2d_mouse_entered() -> void:
-	#print("hovering")
-	#
-#func _on_area_2d_mouse_exited() -> void:
-	#print("hover exit")
+func _on_area_2d_mouse_entered() -> void:
+	$FullHead/Head.position -= Vector2(0,4)
+	
+func _on_area_2d_mouse_exited() -> void:
+	$FullHead/Head.position += Vector2(0,4)
 
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:

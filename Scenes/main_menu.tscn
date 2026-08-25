@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b2ky2b2ksgs2k"]
 
 [ext_resource type="Script" uid="uid://caqta5rh2pyju" path="res://Scripts/main_menu.gd" id="1_28flt"]
+[ext_resource type="Texture2D" uid="uid://6y1dr50jugem" path="res://Images/classroom.png" id="2_48xlc"]
 
 [node name="MainMenu" type="Node2D" unique_id=205762623]
 script = ExtResource("1_28flt")
@@ -89,3 +90,8 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 32
 disabled = true
 text = "Exam 3"
+
+[node name="Background" type="Sprite2D" parent="." unique_id=119745639]
+z_index = -1
+texture = ExtResource("2_48xlc")
+centered = false

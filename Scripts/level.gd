@@ -13,13 +13,14 @@ extends Node2D
 @onready var classroom := $Classroom
 @onready var second_timer := $ExamSecondTimer
 
+@export var grade := "k"
 @export var level_number := 1
 @export var exam_time_seconds := 60
 var remaining_exam_time := exam_time_seconds
 
 var completing_level := false
 
-signal level_complete(level_number)
+signal level_complete(grade, level)
 
 func _ready() -> void:
 	find_and_connect_unlock_tracker()
@@ -76,7 +77,7 @@ func _on_exam_second_timer_timeout() -> void:
 		set_timer_text(remaining_exam_time)
 	elif not completing_level:
 		completing_level = true
-		level_complete.emit(level_number)
+		level_complete.emit(grade, level_number)
 		win_text.visible = true
 		await get_tree().create_timer(2).timeout
 		get_tree().change_scene_to_file("res://Scenes/main_menu.tscn")

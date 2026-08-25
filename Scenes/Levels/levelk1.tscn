@@ -1,0 +1,138 @@
+[gd_scene format=3 uid="uid://cffcdg0wtbqf"]
+
+[ext_resource type="Script" uid="uid://b37acf6ohpbhc" path="res://Scripts/level.gd" id="1_pbg8b"]
+[ext_resource type="PackedScene" uid="uid://eqdt8ag4c0cg" path="res://Scenes/classroom.tscn" id="2_nh0ii"]
+
+[node name="Level" type="Node2D" unique_id=2072235442]
+script = ExtResource("1_pbg8b")
+exam_time_seconds = 2
+
+[node name="Classroom" parent="." unique_id=1353106248 instance=ExtResource("2_nh0ii")]
+number_of_students = 2
+max_random_wait_seconds = 1
+
+[node name="Button" type="Button" parent="." unique_id=783683057]
+offset_top = 1024.0
+offset_right = 45.0
+offset_bottom = 1055.0
+scale = Vector2(1.6648053, 1.7083713)
+text = "Back
+"
+
+[node name="FailureText" type="Label" parent="." unique_id=2005486164]
+visible = false
+offset_left = 776.00006
+offset_top = 432.00006
+offset_right = 989.00006
+offset_bottom = 520.00006
+scale = Vector2(1.4110129, 1.5892743)
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 64
+text = "FAILED"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="WinText" type="Label" parent="." unique_id=2058650110]
+visible = false
+offset_left = 776.00006
+offset_top = 432.00006
+offset_right = 989.00006
+offset_bottom = 520.00006
+scale = Vector2(1.4110129, 1.5892743)
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_font_sizes/font_size = 64
+text = "EXAM COMPLETE!"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CountdownText" type="Label" parent="." unique_id=453094150]
+visible = false
+offset_left = 776.00006
+offset_top = 432.00006
+offset_right = 989.00006
+offset_bottom = 520.00006
+scale = Vector2(1.4110129, 1.5892743)
+theme_override_font_sizes/font_size = 64
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ExamSecondTimer" type="Timer" parent="." unique_id=286506423]
+
+[node name="ExamUI" type="Control" parent="." unique_id=663032785]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CheatsText" type="Label" parent="ExamUI" unique_id=1655652041]
+layout_mode = 0
+offset_left = 1656.0
+offset_top = 1040.0
+offset_right = 1802.0
+offset_bottom = 1063.0
+scale = Vector2(1.4110129, 1.5892743)
+text = "Successful Cheats: "
+
+[node name="CheatsCountText" type="Label" parent="ExamUI" unique_id=250890592]
+layout_mode = 0
+offset_left = 1864.0001
+offset_top = 1040.0001
+offset_right = 2010.0001
+offset_bottom = 1089.0001
+scale = Vector2(1.4110129, 1.5892743)
+text = "0
+"
+
+[node name="FalseAccusationText" type="Label" parent="ExamUI" unique_id=2082580466]
+layout_mode = 0
+offset_left = 1232.0
+offset_top = 1040.0
+offset_right = 1378.0
+offset_bottom = 1063.0
+scale = Vector2(1.4110129, 1.5892743)
+text = "False Accusations: "
+
+[node name="FalseAccusationCountText" type="Label" parent="ExamUI" unique_id=2134430358]
+layout_mode = 0
+offset_left = 1440.0001
+offset_top = 1040.0001
+offset_right = 1586.0001
+offset_bottom = 1089.0001
+scale = Vector2(1.4110129, 1.5892743)
+text = "0
+"
+
+[node name="TimeText" type="Label" parent="ExamUI" unique_id=1421856299]
+layout_mode = 0
+offset_left = 904.0
+offset_top = 1040.0
+offset_right = 1050.0
+offset_bottom = 1063.0
+scale = Vector2(1.4110129, 1.5892743)
+text = "Time Remaining:"
+
+[node name="TimeLeftText" type="Label" parent="ExamUI" unique_id=680737268]
+layout_mode = 0
+offset_left = 1096.0001
+offset_top = 1040.0
+offset_right = 1242.0001
+offset_bottom = 1089.0
+scale = Vector2(1.4110129, 1.5892743)
+text = "0
+"
+
+[node name="StartButton" type="Button" parent="." unique_id=1911399549]
+offset_left = 952.0
+offset_top = 1032.0
+offset_right = 1045.0
+offset_bottom = 1063.0
+scale = Vector2(1.2602729, 1.3863697)
+text = "Start Exam"
+
+[connection signal="failed_accusation_update" from="Classroom" to="." method="_on_failed_accusation_update"]
+[connection signal="level_failed" from="Classroom" to="." method="_on_level_failed"]
+[connection signal="successful_cheat_update" from="Classroom" to="." method="_on_successful_cheat_update"]
+[connection signal="pressed" from="Button" to="." method="_on_button_pressed"]
+[connection signal="timeout" from="ExamSecondTimer" to="." method="_on_exam_second_timer_timeout"]
+[connection signal="pressed" from="StartButton" to="." method="_on_start_button_pressed"]

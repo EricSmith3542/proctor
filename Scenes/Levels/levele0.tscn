@@ -1,13 +1,15 @@
-[gd_scene format=3 uid="uid://cwey3ecvqmnko"]
+[gd_scene format=3 uid="uid://nj5e4pfv7opr"]
 
-[ext_resource type="Script" uid="uid://b37acf6ohpbhc" path="res://Scripts/level.gd" id="1_16p8j"]
-[ext_resource type="PackedScene" uid="uid://eqdt8ag4c0cg" path="res://Scenes/classroom.tscn" id="2_1ukdm"]
+[ext_resource type="Script" uid="uid://b37acf6ohpbhc" path="res://Scripts/level.gd" id="1_8gnl6"]
+[ext_resource type="PackedScene" uid="uid://eqdt8ag4c0cg" path="res://Scenes/classroom.tscn" id="2_48dgi"]
 
 [node name="Level" type="Node2D" unique_id=2072235442]
-script = ExtResource("1_16p8j")
+script = ExtResource("1_8gnl6")
+grade = "e"
+level_number = 0
 exam_time_seconds = 1
 
-[node name="Classroom" parent="." unique_id=1353106248 instance=ExtResource("2_1ukdm")]
+[node name="Classroom" parent="." unique_id=1353106248 instance=ExtResource("2_48dgi")]
 number_of_students = 3
 rows_of_desks = 1
 max_random_wait_seconds = 1

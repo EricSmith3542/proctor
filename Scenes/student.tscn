@@ -64,7 +64,7 @@ position = Vector2(0, -5)
 visible = false
 position = Vector2(10, -4)
 
-[node name="Sprite2D" type="Sprite2D" parent="FullHead/Head" unique_id=1815252956]
+[node name="Mouth" type="Sprite2D" parent="FullHead/Head" unique_id=1815252956]
 texture = ExtResource("5_yj8rq")
 
 [node name="FullDesk" type="Node2D" parent="." unique_id=1616577547]

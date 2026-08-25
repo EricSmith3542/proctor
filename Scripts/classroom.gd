@@ -6,7 +6,6 @@ const STUDENT_WIDTH = 128
 const STUDENT_HEIGHT = 200
 const SAFE_ACTIONS = [0, 1]
 
-signal exam_started
 signal level_failed
 signal successful_cheat_update(cheat_count)
 signal failed_accusation_update(accusation_count)
@@ -15,6 +14,7 @@ var present_indices = []
 var active_cheaters = {}
 var successful_cheats = 0
 var false_accusations = 0
+var exam_in_progress = false
 
 @export var number_of_students = 8
 
@@ -81,7 +81,7 @@ func prepare_student(student, index):
 
 func start_exam():
 	# TODO: post mvp this is where you would trigger picking up pencils
-	
+	exam_in_progress = true
 	#Start random actions
 	for student in $StudentContainer.get_children():
 		if student.is_present:
@@ -154,6 +154,9 @@ func _on_student_requests_action(student):
 		start_random_action_random_wait(student)
 
 func _on_student_accused(index):
+	if not exam_in_progress:
+		return
+		
 	if active_cheaters.has(index):
 		print("Stopped student ", index, " from cheating")
 		active_cheaters.erase(index)

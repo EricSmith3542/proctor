@@ -3,12 +3,24 @@
 [ext_resource type="Script" uid="uid://caqta5rh2pyju" path="res://Scripts/main_menu.gd" id="1_28flt"]
 [ext_resource type="Texture2D" uid="uid://6y1dr50jugem" path="res://Images/classroom.png" id="2_48xlc"]
 
+[sub_resource type="LabelSettings" id="LabelSettings_48xlc"]
+font_size = 128
+outline_size = 10
+outline_color = Color(0, 0, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_1ehe0"]
+font_size = 64
+
+[sub_resource type="LabelSettings" id="LabelSettings_ce3w2"]
+font_size = 32
+
 [node name="MainMenu" type="Node2D" unique_id=205762623]
 script = ExtResource("1_28flt")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=631365183]
 
-[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer" unique_id=1489470900]
+[node name="ExamSelectUI" type="HBoxContainer" parent="CanvasLayer" unique_id=1489470900]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -16,82 +28,191 @@ grow_horizontal = 2
 grow_vertical = 2
 alignment = 1
 
-[node name="FlowContainer" type="VFlowContainer" parent="CanvasLayer/HBoxContainer" unique_id=667534010]
+[node name="FlowContainer" type="VFlowContainer" parent="CanvasLayer/ExamSelectUI" unique_id=667534010]
 layout_mode = 2
-theme_override_constants/v_separation = 333
 alignment = 1
 
-[node name="Label" type="Label" parent="CanvasLayer/HBoxContainer/FlowContainer" unique_id=1590840538]
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer" unique_id=517944001]
+layout_mode = 2
+theme_override_constants/margin_bottom = 200
+
+[node name="Label" type="Label" parent="CanvasLayer/ExamSelectUI/FlowContainer/MarginContainer" unique_id=1590840538]
 layout_mode = 2
 theme_override_font_sizes/font_size = 64
 text = "Select an Exam"
+label_settings = SubResource("LabelSettings_48xlc")
 horizontal_alignment = 1
 
-[node name="Grade Levels" type="FlowContainer" parent="CanvasLayer/HBoxContainer/FlowContainer" unique_id=108952542]
+[node name="Grade Levels" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer" unique_id=108952542]
 layout_mode = 2
 theme_override_constants/h_separation = 100
-vertical = true
+alignment = 1
 
-[node name="Kindergarten" type="FlowContainer" parent="CanvasLayer/HBoxContainer/FlowContainer/Grade Levels" unique_id=67527899]
+[node name="Kindergarten" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels" unique_id=67527899]
 layout_mode = 2
 last_wrap_alignment = 2
 
-[node name="KindergartenLabel" type="Label" parent="CanvasLayer/HBoxContainer/FlowContainer/Grade Levels/Kindergarten" unique_id=69347114]
+[node name="KindergartenLabel" type="Label" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten" unique_id=69347114]
 layout_mode = 2
 theme_override_font_sizes/font_size = 49
 text = "Kindergarten"
 
-[node name="Level Buttons" type="FlowContainer" parent="CanvasLayer/HBoxContainer/FlowContainer/Grade Levels/Kindergarten" unique_id=1152629697]
+[node name="Level Buttons" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten" unique_id=1152629697]
 layout_mode = 2
 
-[node name="Button1" type="Button" parent="CanvasLayer/HBoxContainer/FlowContainer/Grade Levels/Kindergarten/Level Buttons" unique_id=292781704]
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons" unique_id=292781704]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Exam 1"
 
-[node name="Button2" type="Button" parent="CanvasLayer/HBoxContainer/FlowContainer/Grade Levels/Kindergarten/Level Buttons" unique_id=1635962677]
+[node name="Button2" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons" unique_id=1635962677]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 disabled = true
 text = "Exam 2"
 
-[node name="Button3" type="Button" parent="CanvasLayer/HBoxContainer/FlowContainer/Grade Levels/Kindergarten/Level Buttons" unique_id=613800575]
+[node name="Button3" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons" unique_id=613800575]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 disabled = true
 text = "Exam 3"
 
-[node name="Elementary" type="FlowContainer" parent="CanvasLayer/HBoxContainer/FlowContainer/Grade Levels" unique_id=761356410]
+[node name="Elementary" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels" unique_id=761356410]
 layout_mode = 2
 last_wrap_alignment = 2
 
-[node name="ElementaryLabel" type="Label" parent="CanvasLayer/HBoxContainer/FlowContainer/Grade Levels/Elementary" unique_id=1375822847]
+[node name="ElementaryLabel" type="Label" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary" unique_id=1375822847]
 layout_mode = 2
 theme_override_font_sizes/font_size = 49
 text = "Elementary"
 
-[node name="Level Buttons" type="FlowContainer" parent="CanvasLayer/HBoxContainer/FlowContainer/Grade Levels/Elementary" unique_id=1589646690]
+[node name="Level Buttons" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary" unique_id=1589646690]
 layout_mode = 2
 
-[node name="Button1" type="Button" parent="CanvasLayer/HBoxContainer/FlowContainer/Grade Levels/Elementary/Level Buttons" unique_id=997828303]
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons" unique_id=997828303]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 disabled = true
 text = "Exam 1"
 
-[node name="Button2" type="Button" parent="CanvasLayer/HBoxContainer/FlowContainer/Grade Levels/Elementary/Level Buttons" unique_id=18307060]
+[node name="Button2" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons" unique_id=18307060]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 disabled = true
 text = "Exam 2"
 
-[node name="Button3" type="Button" parent="CanvasLayer/HBoxContainer/FlowContainer/Grade Levels/Elementary/Level Buttons" unique_id=1069198524]
+[node name="Button3" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons" unique_id=1069198524]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 disabled = true
 text = "Exam 3"
+
+[node name="ExamSelectBackButton" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer" unique_id=711265146]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+text = "Back"
+
+[node name="TitleUI" type="HBoxContainer" parent="CanvasLayer" unique_id=1344594629]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="VFlowContainer" type="VFlowContainer" parent="CanvasLayer/TitleUI" unique_id=28467803]
+layout_mode = 2
+theme_override_constants/v_separation = 13
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/TitleUI/VFlowContainer" unique_id=742455545]
+layout_mode = 2
+theme_override_constants/margin_bottom = 260
+
+[node name="Label" type="Label" parent="CanvasLayer/TitleUI/VFlowContainer/MarginContainer" unique_id=1210876489]
+layout_mode = 2
+text = "Proctor"
+label_settings = SubResource("LabelSettings_48xlc")
+
+[node name="Play Button" type="Button" parent="CanvasLayer/TitleUI/VFlowContainer" unique_id=1317556645]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Play"
+
+[node name="Settings Button" type="Button" parent="CanvasLayer/TitleUI/VFlowContainer" unique_id=1635058069]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Settings"
+
+[node name="Quit Button" type="Button" parent="CanvasLayer/TitleUI/VFlowContainer" unique_id=1455319291]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Quit"
+
+[node name="SettingsUI" type="HBoxContainer" parent="CanvasLayer" unique_id=833388841]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="VFlowContainer" type="VFlowContainer" parent="CanvasLayer/SettingsUI" unique_id=2047861589]
+layout_mode = 2
+theme_override_constants/v_separation = 13
+alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/SettingsUI/VFlowContainer" unique_id=542056939]
+layout_mode = 2
+theme_override_constants/margin_bottom = 102
+
+[node name="Label" type="Label" parent="CanvasLayer/SettingsUI/VFlowContainer/MarginContainer" unique_id=455690105]
+layout_mode = 2
+text = "Settings"
+label_settings = SubResource("LabelSettings_48xlc")
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer/SettingsUI/VFlowContainer" unique_id=22955907]
+layout_mode = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="CanvasLayer/SettingsUI/VFlowContainer/MarginContainer2" unique_id=970674252]
+layout_mode = 2
+text = "Master Volume"
+label_settings = SubResource("LabelSettings_1ehe0")
+
+[node name="HFlowContainer" type="HFlowContainer" parent="CanvasLayer/SettingsUI/VFlowContainer" unique_id=1945296797]
+layout_mode = 2
+
+[node name="Volume Number" type="Label" parent="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer" unique_id=1373147005]
+layout_mode = 2
+text = "50"
+label_settings = SubResource("LabelSettings_ce3w2")
+
+[node name="Volume Slider" type="HSlider" parent="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer" unique_id=1696688271]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 50.0
+tick_count = 100
+ticks_on_borders = true
+ticks_position = 3
+
+[node name="SettingsBackButton" type="Button" parent="CanvasLayer/SettingsUI/VFlowContainer" unique_id=1300651111]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 32
+text = "Back"
 
 [node name="Background" type="Sprite2D" parent="." unique_id=119745639]
 z_index = -1
 texture = ExtResource("2_48xlc")
 centered = false
+
+[connection signal="pressed" from="CanvasLayer/ExamSelectUI/FlowContainer/ExamSelectBackButton" to="." method="_on_exam_select_back_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/TitleUI/VFlowContainer/Play Button" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/TitleUI/VFlowContainer/Settings Button" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/TitleUI/VFlowContainer/Quit Button" to="." method="_on_quit_button_pressed"]
+[connection signal="value_changed" from="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer/Volume Slider" to="." method="_on_volume_slider_value_changed"]
+[connection signal="pressed" from="CanvasLayer/SettingsUI/VFlowContainer/SettingsBackButton" to="." method="_on_settings_back_button_pressed"]

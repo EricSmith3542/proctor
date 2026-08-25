@@ -199,6 +199,10 @@ tick_count = 100
 ticks_on_borders = true
 ticks_position = 3
 
+[node name="VolumeTest" type="Button" parent="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer" unique_id=1583559484]
+layout_mode = 2
+text = "Test"
+
 [node name="SettingsBackButton" type="Button" parent="CanvasLayer/SettingsUI/VFlowContainer" unique_id=1300651111]
 layout_mode = 2
 size_flags_horizontal = 4
@@ -215,4 +219,5 @@ centered = false
 [connection signal="pressed" from="CanvasLayer/TitleUI/VFlowContainer/Settings Button" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TitleUI/VFlowContainer/Quit Button" to="." method="_on_quit_button_pressed"]
 [connection signal="value_changed" from="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer/Volume Slider" to="." method="_on_volume_slider_value_changed"]
+[connection signal="pressed" from="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer/VolumeTest" to="." method="_on_volume_test_pressed"]
 [connection signal="pressed" from="CanvasLayer/SettingsUI/VFlowContainer/SettingsBackButton" to="." method="_on_settings_back_button_pressed"]

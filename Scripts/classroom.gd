@@ -117,6 +117,7 @@ func increment_false_accusations():
 func handle_if_cheating(student):
 	if active_cheaters.has(student.index):
 		print("Student ", student.index, " cheated with action ", active_cheaters[student.index])
+		play_sound(SoundManager.LAUGH, student.get_head_center())
 		increment_cheat_count()
 		active_cheaters.erase(student.index)
 		return true
@@ -158,10 +159,12 @@ func check_for_fail():
 func enter_fail_state():
 	exam_in_progress = false
 	stop_all_student_actions()
+	play_sound(SoundManager.FAIL)
 	level_failed.emit()
 	
 func enter_win_state():
 	exam_in_progress = false
+	play_sound(SoundManager.SUCCESS)
 	stop_all_student_actions()
 
 func stop_all_student_actions():
@@ -182,7 +185,9 @@ func _on_student_accused(index):
 		cheat_stopped.emit()
 		print("Stopped student ", index, " from cheating")
 		active_cheaters.erase(index)
-		start_action_random_wait(get_student_by_index(index), 0)
+		var student = get_student_by_index(index)
+		play_sound(SoundManager.AWW, student.get_head_center())
+		start_action_random_wait(student, 0)
 	else:
 		print("Falsely accused student ", index, " of cheating")
 		increment_false_accusations()

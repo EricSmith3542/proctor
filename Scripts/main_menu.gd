@@ -70,3 +70,6 @@ func _on_settings_back_button_pressed() -> void:
 func _on_exam_select_back_button_pressed() -> void:
 	$CanvasLayer/ExamSelectUI.hide()
 	$CanvasLayer/TitleUI.show()
+
+func _on_volume_test_pressed() -> void:
+	SoundManager.play_all_sounds_sequential()

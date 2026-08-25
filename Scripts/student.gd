@@ -35,7 +35,6 @@ func perform_action(action_number, new_action_request_time):
 		Actions.LOOK_RIGHT:
 			look_right()
 	$Timer.start(new_action_request_time)
-	request_sound.emit(SoundManager.TEST_L, $FullHead/Head.global_position)
 	
 func stop_performing_actions():
 	$Timer.stop()
@@ -61,6 +60,9 @@ func mark_absent():
 	is_present = false
 	$FullHead.hide()
 	$FullDesk/Test.hide()
+	
+func get_head_center():
+	return $FullHead/Head.global_position
 
 func _on_area_2d_mouse_entered() -> void:
 	$FullHead/Head.position -= Vector2(0,4)

@@ -18,3 +18,6 @@ func find_sound_manager() -> Node2D:
 
 func connect_sound_request_signal(sound_manager):
 	request_sound.connect(sound_manager._on_request_sound)
+
+func play_sound(sound, pos = get_viewport_rect().size / 2):
+	request_sound.emit(sound, pos)

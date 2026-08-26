@@ -6,7 +6,7 @@ extends Node2D
 @onready var false_accusation_count_text := $CanvasLayer/ExamUI/FalseAccusationCountText
 @onready var time_left_text := $CanvasLayer/ExamUI/TimeLeftText
 @onready var exam_end_ui_panel := $CanvasLayer/ExamEndUIPanel
-@onready var countdown_text := $CanvasLayer/CountdownText
+@onready var countdown_text := $CanvasLayer/MarginContainer3/CountdownText
 @onready var start_button := $CanvasLayer/MarginContainer2/StartButton
 
 @onready var classroom := $Classroom

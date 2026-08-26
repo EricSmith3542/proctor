@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bd738p0afre1s" path="res://Scenes/UI/exam_end_ui_panel.tscn" id="4_m7m8v"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_mxxjo"]
-font_size = 32
+font_size = 64
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
@@ -128,13 +128,18 @@ scale = Vector2(1.4110129, 1.5892743)
 text = "0
 "
 
-[node name="CountdownText" type="Label" parent="CanvasLayer" unique_id=453094150]
-visible = false
-offset_left = 864.00006
-offset_top = 168.00002
-offset_right = 1077.0
-offset_bottom = 256.0
-scale = Vector2(1.4110129, 1.5892743)
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer" unique_id=1318145864]
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.0
+offset_right = 20.0
+offset_bottom = 45.0
+grow_horizontal = 2
+theme_override_constants/margin_top = 223
+
+[node name="CountdownText" type="Label" parent="CanvasLayer/MarginContainer3" unique_id=453094150]
+layout_mode = 2
 theme_override_font_sizes/font_size = 64
 label_settings = SubResource("LabelSettings_mxxjo")
 horizontal_alignment = 1

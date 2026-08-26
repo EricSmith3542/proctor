@@ -10,3 +10,4 @@ exam_time_seconds = 20
 number_of_students = 12
 rows_of_desks = 3
 cols_of_desks = 5
+fixed_cheat_time_seconds = 10

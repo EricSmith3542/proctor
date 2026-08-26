@@ -4,7 +4,9 @@
 
 [node name="Level" unique_id=2072235442 instance=ExtResource("1_eul71")]
 level_number = 0
+exam_time_seconds = 20
 
 [node name="Classroom" parent="." index="0" unique_id=1353106248]
 number_of_students = 3
 cols_of_desks = 3
+fixed_cheat_time_seconds = 10

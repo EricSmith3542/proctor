@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dr8nse1jqclro"]
+
+[ext_resource type="PackedScene" uid="uid://cwey3ecvqmnko" path="res://Scenes/Levels/level_base.tscn" id="1_2l7lh"]
+
+[node name="Level" unique_id=2072235442 instance=ExtResource("1_2l7lh")]
+level_number = 1
+exam_time_seconds = 20
+
+[node name="Classroom" parent="." index="0" unique_id=1353106248]
+number_of_students = 7
+rows_of_desks = 3
+cols_of_desks = 3
+fixed_cheat_time_seconds = 10

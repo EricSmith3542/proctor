@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://b37acf6ohpbhc" path="res://Scripts/level.gd" id="1_rnfvs"]
 [ext_resource type="PackedScene" uid="uid://eqdt8ag4c0cg" path="res://Scenes/classroom.tscn" id="2_m7m8v"]
 [ext_resource type="Texture2D" uid="uid://6y1dr50jugem" path="res://Images/classroom.png" id="3_8s78d"]
-[ext_resource type="PackedScene" uid="uid://bs8xvdc3o1ems" path="res://Scenes/UI/exam_end_ui.tscn" id="4_m7m8v"]
+[ext_resource type="PackedScene" uid="uid://bd738p0afre1s" path="res://Scenes/UI/exam_end_ui_panel.tscn" id="4_m7m8v"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_mxxjo"]
 font_size = 32
@@ -140,7 +140,7 @@ label_settings = SubResource("LabelSettings_mxxjo")
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ExamEndUI" parent="CanvasLayer" unique_id=375763521 instance=ExtResource("4_m7m8v")]
+[node name="ExamEndUIPanel" parent="CanvasLayer" unique_id=444349107 instance=ExtResource("4_m7m8v")]
 visible = false
 
 [connection signal="cheat_stopped" from="Classroom" to="." method="_on_cheat_stopped"]

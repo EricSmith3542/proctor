@@ -5,7 +5,7 @@ extends Node2D
 @onready var cheat_count_text := $CanvasLayer/ExamUI/CheatsCountText
 @onready var false_accusation_count_text := $CanvasLayer/ExamUI/FalseAccusationCountText
 @onready var time_left_text := $CanvasLayer/ExamUI/TimeLeftText
-@onready var exam_end_ui := $CanvasLayer/ExamEndUI
+@onready var exam_end_ui_panel := $CanvasLayer/ExamEndUIPanel
 @onready var countdown_text := $CanvasLayer/CountdownText
 @onready var start_button := $CanvasLayer/MarginContainer2/StartButton
 
@@ -29,7 +29,7 @@ func _ready() -> void:
 	connect_exam_end_signals()
 
 func connect_exam_end_signals():
-	exam_end_ui.connect_continue_pressed_signal(_on_button_pressed)
+	exam_end_ui_panel.connect_continue_pressed_signal(_on_button_pressed)
 
 func find_and_connect_unlock_tracker():
 	var nodes = get_tree().get_nodes_in_group("UnlockTracker")
@@ -44,14 +44,14 @@ func _on_level_failed():
 	display_fail_screen()
 	
 func display_fail_screen():
-	exam_end_ui.show()
-	exam_end_ui.set_win_label(false)
-	exam_end_ui.set_all_label_values(cheats_stopped, false_accusations, cheats_succeeded)
+	exam_end_ui_panel.show()
+	exam_end_ui_panel.set_win_label(false)
+	exam_end_ui_panel.set_all_label_values(cheats_stopped, false_accusations, cheats_succeeded)
 	
 func display_win_screen():
-	exam_end_ui.show()
-	exam_end_ui.set_win_label(true)
-	exam_end_ui.set_all_label_values(cheats_stopped, false_accusations, cheats_succeeded)
+	exam_end_ui_panel.show()
+	exam_end_ui_panel.set_win_label(true)
+	exam_end_ui_panel.set_all_label_values(cheats_stopped, false_accusations, cheats_succeeded)
 
 func _on_successful_cheat_update(cheat_count):
 	cheat_count_text.text = str(cheat_count)

@@ -180,14 +180,15 @@ func _on_student_requests_action(student):
 func _on_student_accused(index):
 	if not exam_in_progress:
 		return
-		
+	
+	var student = get_student_by_index(index)
 	if active_cheaters.has(index):
 		cheat_stopped.emit()
 		print("Stopped student ", index, " from cheating")
 		active_cheaters.erase(index)
-		var student = get_student_by_index(index)
 		play_sound(SoundManager.AWW, student.get_head_center())
 		start_action_random_wait(student, 0)
 	else:
 		print("Falsely accused student ", index, " of cheating")
+		play_sound(SoundManager.HEY, student.get_head_center())
 		increment_false_accusations()

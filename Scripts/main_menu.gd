@@ -54,7 +54,7 @@ func prepare_and_show_exam_select():
 	$CanvasLayer/ExamSelectUI.show()
 
 func _on_quit_button_pressed() -> void:
-	get_tree().quit()
+	GameQuitter.request_quit()
 
 func _on_volume_slider_value_changed(value: float) -> void:
 	SoundManager.set_master_volume(value)

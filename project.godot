@@ -25,6 +25,7 @@ SoundManager="*uid://bhm63v7e41qmo"
 UnlockTracker="*uid://tnptjr1gsrj4"
 GameQuitter="*uid://pwlwp6pkytvn"
 SaveManager="*uid://dgn0y2cbgwhpk"
+SpriteManger="*uid://cpi4627iygtud"
 
 [display]
 

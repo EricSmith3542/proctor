@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cpi4627iygtud"]
+
+[ext_resource type="Script" uid="uid://c3gqmrfun4hij" path="res://Scripts/sprite_manger.gd" id="1_nc2u0"]
+
+[node name="SpriteManger" type="Node2D" unique_id=923556328]
+script = ExtResource("1_nc2u0")

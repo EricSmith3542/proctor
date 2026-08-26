@@ -81,7 +81,7 @@ func prepare_student(student, index):
 	student.accused_of_cheating.connect(_on_student_accused.bind(index))
 	student.get_node("Timer").timeout.connect(_on_student_requests_action.bind(student))
 	student.look_forward()
-	start_random_action_random_wait(student)
+	#start_random_action_random_wait(student)
 
 func start_exam():
 	# TODO: post mvp this is where you would trigger picking up pencils

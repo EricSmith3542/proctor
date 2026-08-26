@@ -80,6 +80,14 @@ texture = ExtResource("7_hmaxr")
 [node name="Timer" type="Timer" parent="." unique_id=972490081]
 one_shot = true
 
+[node name="TalkTimer" type="Timer" parent="." unique_id=2027439899]
+one_shot = true
+
+[node name="MouthChangeTimer" type="Timer" parent="." unique_id=1080954634]
+one_shot = true
+
 [connection signal="input_event" from="FullHead/Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="FullHead/Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="FullHead/Area2D" to="." method="_on_area_2d_mouse_exited"]
+[connection signal="timeout" from="TalkTimer" to="." method="_on_talk_timer_timeout"]
+[connection signal="timeout" from="MouthChangeTimer" to="." method="_on_mouth_change_timer_timeout"]

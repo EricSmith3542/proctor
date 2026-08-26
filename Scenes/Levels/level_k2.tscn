@@ -5,9 +5,7 @@
 [node name="Level" unique_id=2072235442 instance=ExtResource("1_w2y7e")]
 level_number = 2
 exam_time_seconds = 20
-
-[node name="Classroom" parent="." index="0" unique_id=1353106248]
-number_of_students = 12
-rows_of_desks = 3
+number_of_students = 15
 cols_of_desks = 5
-fixed_cheat_time_seconds = 10
+max_random_wait_seconds = 5
+fixed_cheat_time_seconds = 7

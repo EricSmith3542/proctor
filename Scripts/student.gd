@@ -15,8 +15,7 @@ const MAX_TALK_STATE_TIME := .3
 @onready var mouth_sprite = $FullHead/Head/Mouth
 @onready var talk_timer = $TalkTimer
 @onready var mouth_change_timer = $MouthChangeTimer
-
-enum Actions {LOOK_DOWN, LOOK_FORWARD, LOOK_LEFT, LOOK_RIGHT}
+@onready var cough_timer = $CoughTimer
 
 signal accused_of_cheating()
 
@@ -27,26 +26,27 @@ var index = -1
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super()
-
-func _input(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_up") and is_present:
-		talk(3)
 		
-func perform_action(action_number, new_action_request_time):
+func perform_action(action_number, new_action_request_time, duration):
 	match(action_number):
-		Actions.LOOK_DOWN:
+		Level.Actions.LOOK_DOWN:
 			look_down()
-		Actions.LOOK_FORWARD:
+		Level.Actions.LOOK_FORWARD:
 			look_forward()
-		Actions.LOOK_LEFT:
+		Level.Actions.LOOK_LEFT:
 			look_left()
-		Actions.LOOK_RIGHT:
+		Level.Actions.LOOK_RIGHT:
 			look_right()
-	$Timer.start(new_action_request_time)
+		Level.Actions.TALK:
+			talk(duration)
+		Level.Actions.COUGH:
+			cough()
+	
+	if new_action_request_time != -1:
+		$Timer.start(new_action_request_time)
 	
 func stop_performing_actions():
 	$Timer.stop()
-		
 		
 func look_left():
 	left_pupil.position = left_look_down_pos + look_left_pos
@@ -65,6 +65,8 @@ func look_down():
 	right_pupil.position = right_look_down_pos
 	
 func talk(duration_seconds):
+	# TODO: play talking sounds for duration
+	play_sound(SoundManager.TEST_L, get_head_center())
 	talk_timer.start(duration_seconds)
 	open_mouth()
 	start_mouth_change_timer()
@@ -79,6 +81,19 @@ func _on_mouth_change_timer_timeout() -> void:
 func _on_talk_timer_timeout() -> void:
 	mouth_change_timer.stop()
 	close_mouth()
+	
+func cough():
+	# TODO: PLAY COUGH SOUND
+	play_sound(SoundManager.TEST, get_head_center())
+	open_mouth()
+	cough_timer.start()
+	await cough_timer.timeout
+	close_mouth()
+	await cough_timer.timeout
+	open_mouth()
+	await cough_timer.timeout
+	close_mouth()
+	cough_timer.stop()
 	
 func open_mouth():
 	is_mouth_open = true

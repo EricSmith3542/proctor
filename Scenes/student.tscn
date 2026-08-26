@@ -86,6 +86,9 @@ one_shot = true
 [node name="MouthChangeTimer" type="Timer" parent="." unique_id=1080954634]
 one_shot = true
 
+[node name="CoughTimer" type="Timer" parent="." unique_id=816150598]
+wait_time = 0.2
+
 [connection signal="input_event" from="FullHead/Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="FullHead/Area2D" to="." method="_on_area_2d_mouse_entered"]
 [connection signal="mouse_exited" from="FullHead/Area2D" to="." method="_on_area_2d_mouse_exited"]

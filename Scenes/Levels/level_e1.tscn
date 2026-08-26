@@ -6,9 +6,6 @@
 grade = "e"
 level_number = 1
 exam_time_seconds = 45
-
-[node name="Classroom" parent="." index="0" unique_id=1353106248]
-number_of_students = 19
-rows_of_desks = 3
-cols_of_desks = 8
-fixed_cheat_time_seconds = 7
+number_of_students = 13
+cols_of_desks = 5
+max_random_wait_seconds = 5

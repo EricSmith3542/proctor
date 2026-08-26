@@ -6,11 +6,11 @@
 grade = "e"
 level_number = 2
 exam_time_seconds = 45
+number_of_students = 45
+rows_of_desks = 5
+cols_of_desks = 10
+max_random_wait_seconds = 5
 
 [node name="Classroom" parent="." index="0" unique_id=1353106248]
 position = Vector2(114, 80)
 scale = Vector2(0.78660417, 0.78660417)
-number_of_students = 45
-rows_of_desks = 5
-cols_of_desks = 10
-fixed_cheat_time_seconds = 7

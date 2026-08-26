@@ -7,11 +7,6 @@ size = Vector2(1920, 1080)
 
 [node name="Classroom" type="Node2D" unique_id=1353106248]
 script = ExtResource("1_fh6w7")
-number_of_students = null
-rows_of_desks = null
-cols_of_desks = null
-max_random_wait_seconds = null
-fixed_cheat_time_seconds = null
 
 [node name="StudentArea" type="Area2D" parent="." unique_id=1347603306]
 position = Vector2(960, 540)
@@ -20,3 +15,8 @@ position = Vector2(960, 540)
 shape = SubResource("RectangleShape2D_fh6w7")
 
 [node name="StudentContainer" type="Node2D" parent="." unique_id=372732600]
+
+[node name="WaveTimer" type="Timer" parent="." unique_id=1587520724]
+one_shot = true
+
+[connection signal="timeout" from="WaveTimer" to="." method="_on_wave_timer_timeout"]

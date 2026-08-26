@@ -12,6 +12,7 @@ signal successful_cheat_update(cheat_count)
 signal failed_accusation_update(accusation_count)
 
 @onready var student_container = $StudentContainer
+@onready var wave_timer = $WaveTimer
 
 var present_indices = []
 var active_cheaters = {}
@@ -19,24 +20,36 @@ var successful_cheats = 0
 var false_accusations = 0
 var exam_in_progress = false
 
-@export var number_of_students = 8
+var number_of_students = 1
 
-#Softcap of 5x8
-@export_range(1, 100, 1) var rows_of_desks : int = 3
-@export_range(1, 100, 1) var cols_of_desks : int = 3
+var rows_of_desks := 1
+var cols_of_desks := 1
+var fixed_cheat_time_seconds := 5
+var action_frequency := 1
+var cheat_frequency := .1
+var max_actions_per_wave := 1
+var min_actions_per_wave := 1
 
-@export var max_random_wait_seconds = 60
-@export var fixed_cheat_time_seconds = 5
+var action_wave_jitter_seconds = 3
+var allowed_actions = []
+
+# This is no longer a difficulty related control and just dicates behavior pre-exam
+var max_random_wait_seconds = 15
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super()
-	make_students()
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-		
+	
+func prepare_classroom(num_students, rows, cols, cheat_time, a_freq, c_freq, max_action, min_action, jitter, actions):
+	number_of_students = num_students
+	rows_of_desks = rows
+	cols_of_desks = cols
+	fixed_cheat_time_seconds = cheat_time
+	max_actions_per_wave = min(max_action, num_students)
+	min_actions_per_wave = min(min_action, num_students)
+	action_wave_jitter_seconds = jitter
+	allowed_actions = actions
+	make_students()		
 		
 func make_students():
 	var area_bounds = $StudentArea/StudentAreaShape.shape.size
@@ -69,6 +82,8 @@ func make_students():
 		remaining_indices.remove_at(remaining_indices.find(random_pick))
 		present_indices.append(random_pick)
 	
+	
+	# Prepare students in present indicies and empty other desks
 	for i in range(student_container.get_children().size()):
 		var student = student_container.get_child(i)
 		if i not in present_indices:
@@ -80,30 +95,70 @@ func prepare_student(student, index):
 	student.index = index
 	student.accused_of_cheating.connect(_on_student_accused.bind(index))
 	student.get_node("Timer").timeout.connect(_on_student_requests_action.bind(student))
-	student.look_forward()
-	#start_random_action_random_wait(student)
+	start_random_action_random_wait(student)
+			
+func start_random_action_random_wait(student, fixed_cheat_time = true):
+	var random_action = range(Level.Actions.size()).pick_random()
+	start_action_random_wait(student, random_action, exam_in_progress and fixed_cheat_time)
 
+func start_action_random_wait(student, action, fixed_cheat_time = true):
+	print("HERE")
+	if is_student_cheating(action, student):
+		active_cheaters[student.index] = action
+		if fixed_cheat_time:
+			student.perform_action(action, fixed_cheat_time_seconds, fixed_cheat_time_seconds)
+			return
+	student.perform_action(action, get_random_wait_seconds(), get_random_talk_seconds())
+	
 func start_exam():
 	# TODO: post mvp this is where you would trigger picking up pencils
-	exam_in_progress = true
-	#Start random actions
+	# All students look down at start of exam
 	for student in student_container.get_children():
 		if student.is_present:
 			student.stop_performing_actions()
-			start_action_random_wait(student, 0)
-
-func start_action_random_wait(student, action, fixed_cheat_time = true):
-	if is_student_cheating(student, action):
-		active_cheaters[student.index] = action
-		if fixed_cheat_time:
-			student.perform_action(action, fixed_cheat_time_seconds)
-			return
-	student.perform_action(action, get_random_wait_seconds())
-
-func start_random_action_random_wait(student, fixed_cheat_time = true):
-	var random_action = range(Student.Actions.size()).pick_random()
-	start_action_random_wait(student, random_action, exam_in_progress and fixed_cheat_time)
+			student.look_down()
+	exam_in_progress = true
+	start_action_waves()
 	
+func start_action_waves():
+	wave_timer.start(get_jittered_wave_timer())
+	
+func get_jittered_wave_timer():
+	return randf_range(max(0, action_frequency - 3), action_frequency + 3)
+	
+func _on_wave_timer_timeout() -> void:
+	start_actions()
+	wave_timer.start(get_jittered_wave_timer())
+	
+func start_actions():
+	var all_students = student_container.get_children().filter(func(student): return student.is_present)
+	var students_ready_for_action = range(all_students.size()).filter(func(index): return index not in active_cheaters.keys())
+	var actions_to_take = min(randi_range(min_actions_per_wave, max_actions_per_wave), students_ready_for_action.size())
+	for i in range(actions_to_take):
+		var student_index = students_ready_for_action.pick_random()
+		students_ready_for_action.remove_at(students_ready_for_action.find(student_index))
+		var student = all_students[student_index]
+		var picked_action
+		var should_cheat = randf() <= cheat_frequency
+		if should_cheat:
+			var cheat_actions = get_cheating_actions_for_student(student)
+			picked_action = cheat_actions.pick_random()
+			active_cheaters[student.index] = picked_action
+			student.perform_action(picked_action, -1, fixed_cheat_time_seconds)
+			var temp_timer = get_tree().create_timer(fixed_cheat_time_seconds)
+			temp_timer.timeout.connect(handle_if_cheating.bind(student))
+		else:
+			var safe_actions = get_safe_actions_for_student(student)
+			picked_action = safe_actions.pick_random()
+			student.perform_action(picked_action, -1, get_random_talk_seconds())
+		print("Student ", student_index, " took action ", Level.Actions.find_key(picked_action), ". CHEATING = ", should_cheat) 
+			
+func get_cheating_actions_for_student(student):
+	return allowed_actions.filter(is_student_cheating.bind(student))
+	
+func get_safe_actions_for_student(student):
+	return allowed_actions.filter(is_student_not_cheating.bind(student))
+
 func increment_cheat_count():
 	successful_cheats += 1
 	successful_cheat_update.emit(successful_cheats)
@@ -127,30 +182,50 @@ func get_student_by_index(index):
 	return student_container.get_child(index)
 	
 func get_random_wait_seconds() -> float:
-	var rand_seconds = randf_range(1,max_random_wait_seconds)
 	return randf_range(1,max_random_wait_seconds)
 	
-func is_student_cheating(student, action):
+func get_random_talk_seconds() -> float:
+	return randf_range(2,fixed_cheat_time_seconds)
+	
+func is_student_not_cheating(action, student):
+	return !is_student_cheating(action, student)
+
+func is_student_cheating(action, student):
 	if not exam_in_progress:
 		return false
 		
 	match(action):
-		Student.Actions.LOOK_DOWN, Student.Actions.LOOK_FORWARD:
+		Level.Actions.LOOK_DOWN, Level.Actions.LOOK_FORWARD, Level.Actions.COUGH:
 			return false
-		Student.Actions.LOOK_LEFT:
-			if student.index % cols_of_desks == 0:
-				return false
-			if not get_student_by_index(student.index - 1).is_present:
-				return false
-			print("Student ", student.index, " attempting cheat with look_left")
-			return true
-		Student.Actions.LOOK_RIGHT:
-			if student.index % cols_of_desks == cols_of_desks - 1:
-				return false
-			if not get_student_by_index(student.index + 1).is_present:
-				return false
-			print("Student ", student.index, " attempting cheat with look_right")
-			return true
+		Level.Actions.LOOK_LEFT:
+			return has_neighbor_left(student)
+		Level.Actions.LOOK_RIGHT:
+			return has_neighbor_right(student)
+		Level.Actions.TALK:
+			return has_any_neighbor(student)
+			
+func has_neighbor_left(student):
+	if student.index % cols_of_desks == 0:
+		return false
+	return get_student_by_index(student.index - 1).is_present
+	
+func has_neighbor_right(student):
+	if student.index % cols_of_desks == cols_of_desks - 1:
+		return false
+	return get_student_by_index(student.index + 1).is_present
+	
+func has_neighbor_up(student):
+	if rows_of_desks == 1 or student.index / rows_of_desks == 0:
+		return false
+	return get_student_by_index(student.index - 4).is_present
+	
+func has_neighbor_down(student):
+	if rows_of_desks == 1 or student.index / rows_of_desks == rows_of_desks - 1:
+		return false
+	return get_student_by_index(student.index + 4).is_present
+	
+func has_any_neighbor(student):
+	return has_neighbor_down(student) or has_neighbor_up(student) or has_neighbor_left(student) or has_neighbor_right(student)
 
 func check_for_fail():
 	if false_accusations + successful_cheats >= 3:
@@ -166,6 +241,7 @@ func enter_win_state():
 	exam_in_progress = false
 	play_sound(SoundManager.SUCCESS)
 	stop_all_student_actions()
+	wave_timer.stop()
 
 func stop_all_student_actions():
 	for student in student_container.get_children():
@@ -173,7 +249,7 @@ func stop_all_student_actions():
 
 func _on_student_requests_action(student):
 	if handle_if_cheating(student):
-		start_action_random_wait(student, Student.Actions.LOOK_DOWN)
+		start_action_random_wait(student, Level.Actions.LOOK_DOWN)
 	else:
 		start_random_action_random_wait(student)
 
@@ -187,7 +263,7 @@ func _on_student_accused(index):
 		print("Stopped student ", index, " from cheating")
 		active_cheaters.erase(index)
 		play_sound(SoundManager.AWW, student.get_head_center())
-		start_action_random_wait(student, 0)
+		student.look_down()
 	else:
 		print("Falsely accused student ", index, " of cheating")
 		play_sound(SoundManager.HEY, student.get_head_center())

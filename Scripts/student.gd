@@ -46,6 +46,7 @@ func perform_action(action_number, new_action_request_time, duration):
 		$Timer.start(new_action_request_time)
 	
 func stop_performing_actions():
+	stop_talking()
 	$Timer.stop()
 		
 func look_left():
@@ -70,6 +71,11 @@ func talk(duration_seconds):
 	talk_timer.start(duration_seconds)
 	open_mouth()
 	start_mouth_change_timer()
+
+func stop_talking():
+	# TODO: kill talking sounds
+	talk_timer.stop()
+	close_mouth()
 	
 func start_mouth_change_timer():
 	mouth_change_timer.start(randf_range(MIN_TALK_STATE_TIME, MAX_TALK_STATE_TIME))

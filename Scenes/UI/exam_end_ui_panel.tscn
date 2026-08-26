@@ -1,8 +1,7 @@
 [gd_scene format=3 uid="uid://bd738p0afre1s"]
 
-[ext_resource type="Script" uid="uid://csbosc071uyex" path="res://Scenes/UI/exam_end_ui_panel.gd" id="1_g1e8w"]
+[ext_resource type="Script" uid="uid://csbosc071uyex" path="res://Scripts/exam_end_ui_panel.gd" id="1_g1e8w"]
 [ext_resource type="PackedScene" uid="uid://bs8xvdc3o1ems" path="res://Scenes/UI/exam_end_ui.tscn" id="1_mx2te"]
-[ext_resource type="Script" path="res://Scenes/UI/exam_end_ui.gd" id="3_m218g"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g1e8w"]
 bg_color = Color(0, 0, 0, 0.6745098)
@@ -20,4 +19,3 @@ script = ExtResource("1_g1e8w")
 
 [node name="ExamEndUI" parent="." unique_id=375763521 instance=ExtResource("1_mx2te")]
 layout_mode = 2
-script = ExtResource("3_m218g")

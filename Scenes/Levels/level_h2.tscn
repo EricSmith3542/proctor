@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://b5jlsg4omck07"]
+
+[ext_resource type="PackedScene" uid="uid://cwey3ecvqmnko" path="res://Scenes/Levels/level_base.tscn" id="1_3lhu4"]
+
+[node name="Level" unique_id=2072235442 instance=ExtResource("1_3lhu4")]
+grade = "h"
+level_number = 2
+exam_time_seconds = 60
+number_of_students = 34
+rows_of_desks = 5
+cols_of_desks = 8
+fixed_cheat_time_seconds = 7
+action_wave_frequency = 4
+action_wave_jitter = 2
+cheat_frequency = 0.7
+max_actions_per_wave = 5
+min_actions_per_wave = 2
+allowed_actions = Array[int]([0, 1, 2, 3, 4, 5])

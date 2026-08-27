@@ -5,12 +5,11 @@
 [node name="Level" unique_id=2072235442 instance=ExtResource("1_3ed7w")]
 grade = "e"
 level_number = 2
-exam_time_seconds = 45
-number_of_students = 45
-rows_of_desks = 5
-cols_of_desks = 10
-max_random_wait_seconds = 5
-
-[node name="Classroom" parent="." index="0" unique_id=1353106248]
-position = Vector2(114, 80)
-scale = Vector2(0.78660417, 0.78660417)
+exam_time_seconds = 30
+number_of_students = 14
+cols_of_desks = 5
+fixed_cheat_time_seconds = 7
+action_wave_frequency = 4
+action_wave_jitter = 1
+cheat_frequency = 0.5
+max_actions_per_wave = 3

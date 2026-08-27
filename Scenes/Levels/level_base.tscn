@@ -7,6 +7,7 @@
 
 [sub_resource type="LabelSettings" id="LabelSettings_mxxjo"]
 font_size = 64
+font_color = Color(0, 1, 0, 1)
 outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
@@ -16,10 +17,6 @@ level_number = -1
 exam_time_seconds = 10
 
 [node name="Classroom" parent="." unique_id=1353106248 instance=ExtResource("2_m7m8v")]
-number_of_students = 0
-rows_of_desks = 1
-cols_of_desks = 1
-max_random_wait_seconds = 5
 
 [node name="ExamSecondTimer" type="Timer" parent="." unique_id=286506423]
 

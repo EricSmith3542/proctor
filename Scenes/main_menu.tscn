@@ -26,6 +26,8 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 alignment = 1
 
 [node name="FlowContainer" type="VFlowContainer" parent="CanvasLayer/ExamSelectUI" unique_id=667534010]
@@ -47,6 +49,7 @@ horizontal_alignment = 1
 layout_mode = 2
 theme_override_constants/h_separation = 100
 alignment = 1
+vertical = true
 
 [node name="Kindergarten" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels" unique_id=67527899]
 layout_mode = 2
@@ -102,6 +105,66 @@ disabled = true
 text = "Exam 2"
 
 [node name="Button3" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons" unique_id=1069198524]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+disabled = true
+text = "Exam 3"
+
+[node name="Middle" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels" unique_id=202988053]
+layout_mode = 2
+last_wrap_alignment = 2
+
+[node name="MiddleLabel" type="Label" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle" unique_id=1172465914]
+layout_mode = 2
+theme_override_font_sizes/font_size = 49
+text = "Middle School"
+
+[node name="Level Buttons" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle" unique_id=490521777]
+layout_mode = 2
+
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons" unique_id=1524396704]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+disabled = true
+text = "Exam 1"
+
+[node name="Button2" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons" unique_id=778816227]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+disabled = true
+text = "Exam 2"
+
+[node name="Button3" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons" unique_id=1176347264]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+disabled = true
+text = "Exam 3"
+
+[node name="High" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels" unique_id=918560380]
+layout_mode = 2
+last_wrap_alignment = 2
+
+[node name="HighLabel" type="Label" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High" unique_id=645539842]
+layout_mode = 2
+theme_override_font_sizes/font_size = 49
+text = "High School"
+
+[node name="Level Buttons" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High" unique_id=1777112433]
+layout_mode = 2
+
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons" unique_id=1244219411]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+disabled = true
+text = "Exam 1"
+
+[node name="Button2" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons" unique_id=1114033798]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+disabled = true
+text = "Exam 2"
+
+[node name="Button3" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons" unique_id=1729729355]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 disabled = true

@@ -102,8 +102,8 @@ func start_random_action_random_wait(student, fixed_cheat_time = true):
 	start_action_random_wait(student, random_action, exam_in_progress and fixed_cheat_time)
 
 func start_action_random_wait(student, action, fixed_cheat_time = true):
-	print("HERE")
 	if is_student_cheating(action, student):
+		print("SHOULD NEVER GET HERE")
 		active_cheaters[student.index] = action
 		if fixed_cheat_time:
 			student.perform_action(action, fixed_cheat_time_seconds, fixed_cheat_time_seconds)
@@ -131,27 +131,36 @@ func _on_wave_timer_timeout() -> void:
 	wave_timer.start(get_jittered_wave_timer())
 	
 func start_actions():
-	var all_students = student_container.get_children().filter(func(student): return student.is_present)
-	var students_ready_for_action = range(all_students.size()).filter(func(index): return index not in active_cheaters.keys())
+	var all_students = student_container.get_children()
+	var all_present_students = all_students.filter(func(student): return student.is_present)
+	var all_student_indicies = []
+	for student in all_present_students:
+		all_student_indicies.append(student.index)
+	var students_ready_for_action = all_student_indicies.filter(func(index): return index not in active_cheaters.keys())
 	var actions_to_take = min(randi_range(min_actions_per_wave, max_actions_per_wave), students_ready_for_action.size())
+	
+	print("WAVE STARTING. Taking ", actions_to_take, " actions. Ready students: ", students_ready_for_action)
 	for i in range(actions_to_take):
 		var student_index = students_ready_for_action.pick_random()
 		students_ready_for_action.remove_at(students_ready_for_action.find(student_index))
 		var student = all_students[student_index]
 		var picked_action
 		var should_cheat = randf() <= cheat_frequency
+		var wait_before_action = randf_range(0,2)
 		if should_cheat:
 			var cheat_actions = get_cheating_actions_for_student(student)
-			picked_action = cheat_actions.pick_random()
-			active_cheaters[student.index] = picked_action
-			student.perform_action(picked_action, -1, fixed_cheat_time_seconds)
-			var temp_timer = get_tree().create_timer(fixed_cheat_time_seconds)
-			temp_timer.timeout.connect(handle_if_cheating.bind(student))
+			if cheat_actions.size() > 0:
+				picked_action = cheat_actions.pick_random()
+				active_cheaters[student.index] = picked_action
+				student.perform_action_after_wait(picked_action, -1, fixed_cheat_time_seconds, wait_before_action)
+				var temp_timer = get_tree().create_timer(fixed_cheat_time_seconds)
+				temp_timer.timeout.connect(handle_if_cheating.bind(student))
+				print("Picked cheat ", picked_action, " from ", cheat_actions)
 		else:
 			var safe_actions = get_safe_actions_for_student(student)
 			picked_action = safe_actions.pick_random()
-			student.perform_action(picked_action, -1, get_random_talk_seconds())
-		print("Student ", student_index, " took action ", Level.Actions.find_key(picked_action), ". CHEATING = ", should_cheat) 
+			student.perform_action_after_wait(picked_action, -1, get_random_talk_seconds(), wait_before_action)
+		print("Student ", student_index, " taking action ", Level.Actions.find_key(picked_action), " in ", wait_before_action,  "seconds. CHEATING = ", should_cheat)
 			
 func get_cheating_actions_for_student(student):
 	return allowed_actions.filter(is_student_cheating.bind(student))
@@ -173,6 +182,7 @@ func handle_if_cheating(student):
 	if active_cheaters.has(student.index):
 		print("Student ", student.index, " cheated with action ", active_cheaters[student.index])
 		play_sound(SoundManager.LAUGH, student.get_head_center())
+		student.look_down()
 		increment_cheat_count()
 		active_cheaters.erase(student.index)
 		return true
@@ -215,14 +225,14 @@ func has_neighbor_right(student):
 	return get_student_by_index(student.index + 1).is_present
 	
 func has_neighbor_up(student):
-	if rows_of_desks == 1 or student.index / rows_of_desks == 0:
+	if rows_of_desks == 1 or student.index / cols_of_desks == 0:
 		return false
-	return get_student_by_index(student.index - 4).is_present
+	return get_student_by_index(student.index - cols_of_desks).is_present
 	
 func has_neighbor_down(student):
-	if rows_of_desks == 1 or student.index / rows_of_desks == rows_of_desks - 1:
+	if rows_of_desks == 1 or student.index / cols_of_desks == rows_of_desks - 1:
 		return false
-	return get_student_by_index(student.index + 4).is_present
+	return get_student_by_index(student.index + cols_of_desks).is_present
 	
 func has_any_neighbor(student):
 	return has_neighbor_down(student) or has_neighbor_up(student) or has_neighbor_left(student) or has_neighbor_right(student)
@@ -240,6 +250,7 @@ func enter_fail_state():
 func enter_win_state():
 	exam_in_progress = false
 	play_sound(SoundManager.SUCCESS)
+	active_cheaters = {}
 	stop_all_student_actions()
 	wave_timer.stop()
 
@@ -263,6 +274,7 @@ func _on_student_accused(index):
 		print("Stopped student ", index, " from cheating")
 		active_cheaters.erase(index)
 		play_sound(SoundManager.AWW, student.get_head_center())
+		student.stop_talking()
 		student.look_down()
 	else:
 		print("Falsely accused student ", index, " of cheating")

@@ -40,7 +40,8 @@ func load_game():
 	
 func load_progress(data):
 	var unlock_tracker = get_tree().get_nodes_in_group("UnlockTracker")[0]
-	unlock_tracker.levels_completed = data["progress"]
+	for key in data["progress"].keys():
+		unlock_tracker.levels_completed[key] = data["progress"][key]
 	
 func load_settings(data):
 	if data.has("sound_settings"):

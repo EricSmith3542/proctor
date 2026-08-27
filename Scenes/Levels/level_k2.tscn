@@ -4,8 +4,10 @@
 
 [node name="Level" unique_id=2072235442 instance=ExtResource("1_w2y7e")]
 level_number = 2
-exam_time_seconds = 20
-number_of_students = 15
-cols_of_desks = 5
-max_random_wait_seconds = 5
+exam_time_seconds = 15
+number_of_students = 7
 fixed_cheat_time_seconds = 7
+action_wave_frequency = 5
+action_wave_jitter = 0
+cheat_frequency = 0.5
+max_actions_per_wave = 2

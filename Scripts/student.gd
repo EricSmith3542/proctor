@@ -26,7 +26,11 @@ var index = -1
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super()
-		
+
+func perform_action_after_wait(action_number, new_action_request_time, duration, wait):
+	await get_tree().create_timer(wait).timeout
+	perform_action(action_number, new_action_request_time, duration)
+
 func perform_action(action_number, new_action_request_time, duration):
 	match(action_number):
 		Level.Actions.LOOK_DOWN:

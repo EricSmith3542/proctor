@@ -1,6 +1,6 @@
 extends Node2D
 
-const GRADE_LEVEL_LETTERS = ["k", "e"]
+const GRADE_LEVEL_LETTERS = ["k", "e", "m", "h"]
 
 @onready var grade_levels := $"CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels".get_children()
 @onready var volume_number_text := $"CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer/Volume Number"

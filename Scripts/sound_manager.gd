@@ -22,9 +22,10 @@ const POSSIBLE_TALK_SOUNDS := [MEE, MEEP, MEEP2, MEEP_SMOL, MEEP_MERP]
 func _ready() -> void:
 	add_to_group("SoundManager")
 
-func _on_request_sound(sound, pos, duration = -1, random_start = false):
+func _on_request_sound(sound, pos, bus = 0, duration = -1, random_start = false):
 	var player = create_stream_player(pos)
 	player.stream = sound
+	player.bus = AudioServer.get_bus_name(bus)
 	
 	if duration == -1:
 		player.finished.connect(_on_player_finished.bind(player))
@@ -57,15 +58,30 @@ func connect_player_delete_to_finished(player, sound):
 	player.finished.connect(_on_player_finished.bind(player))
 	
 func set_master_volume(volume):
-	AudioServer.set_bus_volume_db(0, linear_to_db(volume/100))
+	set_bus_volume(0, volume)
+	
+func set_talk_volume(volume):
+	set_bus_volume(1, volume)
+	
+func set_bus_volume(bus, volume):
+	AudioServer.set_bus_volume_db(bus, linear_to_db(volume/100))
 	
 func play_all_sounds_sequential():
-	var all_sounds = [AWW, HEY, LAUGH, PENCIL, SUCCESS, FAIL]
+	var all_sounds = [AWW, HEY, LAUGH, SUCCESS, FAIL, COUGH]
+	await play_all_sounds(all_sounds)
+	play_all_talk_sounds()
+	
+func play_all_talk_sounds():
+	play_all_sounds(POSSIBLE_TALK_SOUNDS, 1)
+
+func play_all_sounds(all_sounds, bus = 0):
 	var player = create_stream_player(get_viewport_rect().size / 2)
 	add_child(player)
 	for sound in all_sounds:
 		player.stream = sound
+		player.bus = AudioServer.get_bus_name(bus)
 		player.play()
 		await player.finished
 	remove_child(player)
 	player.queue_free()
+	

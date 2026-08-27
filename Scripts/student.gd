@@ -72,7 +72,7 @@ func talk(duration_seconds):
 	start_mouth_change_timer()
 
 func play_random_talk_sound():
-	play_sound(SoundManager.POSSIBLE_TALK_SOUNDS.pick_random(), get_head_center())
+	play_sound(SoundManager.POSSIBLE_TALK_SOUNDS.pick_random(), get_head_center(), 1)
 
 func stop_talking():
 	talk_timer.stop()

@@ -186,6 +186,7 @@ label_settings = SubResource("LabelSettings_1ehe0")
 layout_mode = 2
 
 [node name="Volume Number" type="Label" parent="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer" unique_id=1373147005]
+custom_minimum_size = Vector2(55, 45)
 layout_mode = 2
 text = "50"
 label_settings = SubResource("LabelSettings_ce3w2")
@@ -199,7 +200,38 @@ tick_count = 100
 ticks_on_borders = true
 ticks_position = 3
 
-[node name="VolumeTest" type="Button" parent="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer" unique_id=1583559484]
+[node name="MasterVolumeTest" type="Button" parent="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer" unique_id=1583559484]
+layout_mode = 2
+text = "Test"
+
+[node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/SettingsUI/VFlowContainer" unique_id=1530458830]
+layout_mode = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="CanvasLayer/SettingsUI/VFlowContainer/MarginContainer3" unique_id=444977947]
+layout_mode = 2
+text = "Talking Volume"
+label_settings = SubResource("LabelSettings_1ehe0")
+
+[node name="HFlowContainer2" type="HFlowContainer" parent="CanvasLayer/SettingsUI/VFlowContainer" unique_id=23470343]
+layout_mode = 2
+
+[node name="Volume Number" type="Label" parent="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer2" unique_id=1913291783]
+custom_minimum_size = Vector2(55, 45)
+layout_mode = 2
+text = "25"
+label_settings = SubResource("LabelSettings_ce3w2")
+
+[node name="Volume Slider" type="HSlider" parent="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer2" unique_id=566913641]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 25.0
+tick_count = 100
+ticks_on_borders = true
+ticks_position = 3
+
+[node name="TalkingVolumeTest" type="Button" parent="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer2" unique_id=234343734]
 layout_mode = 2
 text = "Test"
 
@@ -219,5 +251,7 @@ centered = false
 [connection signal="pressed" from="CanvasLayer/TitleUI/VFlowContainer/Settings Button" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="CanvasLayer/TitleUI/VFlowContainer/Quit Button" to="." method="_on_quit_button_pressed"]
 [connection signal="value_changed" from="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer/Volume Slider" to="." method="_on_volume_slider_value_changed"]
-[connection signal="pressed" from="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer/VolumeTest" to="." method="_on_volume_test_pressed"]
+[connection signal="pressed" from="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer/MasterVolumeTest" to="." method="_on_volume_test_pressed"]
+[connection signal="value_changed" from="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer2/Volume Slider" to="." method="_on_talking_volume_slider_value_changed"]
+[connection signal="pressed" from="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer2/TalkingVolumeTest" to="." method="_on_talking_volume_test_pressed"]
 [connection signal="pressed" from="CanvasLayer/SettingsUI/VFlowContainer/SettingsBackButton" to="." method="_on_settings_back_button_pressed"]

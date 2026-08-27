@@ -26,12 +26,14 @@ func save_progress(save_file, data):
 	data["progress"] = unlock_tracker.levels_completed
 	
 func save_settings(save_file, data):
-	data["sound_settings"] = {"master": int(db_to_linear(AudioServer.get_bus_volume_db(0)) * 100)}
+	data["sound_settings"] = {
+		"master": int(db_to_linear(AudioServer.get_bus_volume_db(0)) * 100),
+		"talking": int(db_to_linear(AudioServer.get_bus_volume_db(1)) * 100)
+		}
 	
 func load_game():
 	if not FileAccess.file_exists("user://savegame.save"):
 		return
-		
 	var data = JSON.parse_string(FileAccess.open("user://savegame.save", FileAccess.READ).get_line())
 	load_progress(data)
 	load_settings(data)
@@ -41,4 +43,9 @@ func load_progress(data):
 	unlock_tracker.levels_completed = data["progress"]
 	
 func load_settings(data):
-	SoundManager.set_master_volume(data["sound_settings"]["master"])
+	if data.has("sound_settings"):
+		var sound_settings = data["sound_settings"]
+		if sound_settings.has("master"):
+			SoundManager.set_master_volume(sound_settings["master"])
+		if sound_settings.has("talking"):
+			SoundManager.set_talk_volume(sound_settings["talking"])

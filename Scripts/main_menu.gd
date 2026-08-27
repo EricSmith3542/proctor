@@ -4,6 +4,7 @@ const GRADE_LEVEL_LETTERS = ["k", "e"]
 
 @onready var grade_levels := $"CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels".get_children()
 @onready var volume_number_text := $"CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer/Volume Number"
+@onready var talking_volume_number_text := $"CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer2/Volume Number"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -62,6 +63,9 @@ func _on_volume_slider_value_changed(value: float) -> void:
 	
 func set_volume_text(value):
 	volume_number_text.text = str(int(value))
+	
+func set_talking_volume_text(value):
+	talking_volume_number_text.text = str(int(value))
 
 func _on_settings_back_button_pressed() -> void:
 	$CanvasLayer/SettingsUI.hide()
@@ -73,3 +77,10 @@ func _on_exam_select_back_button_pressed() -> void:
 
 func _on_volume_test_pressed() -> void:
 	SoundManager.play_all_sounds_sequential()
+
+func _on_talking_volume_slider_value_changed(value: float) -> void:
+	SoundManager.set_talk_volume(value)
+	set_talking_volume_text(value)
+
+func _on_talking_volume_test_pressed() -> void:
+	SoundManager.play_all_talk_sounds()

@@ -26,6 +26,10 @@ var index = -1
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super()
+	pick_parts()
+	
+func pick_parts():
+	pass
 
 func perform_action_after_wait(action_number, new_action_request_time, duration, wait):
 	await get_tree().create_timer(wait).timeout

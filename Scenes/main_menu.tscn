@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://b2ky2b2ksgs2k"]
 
 [ext_resource type="Script" uid="uid://caqta5rh2pyju" path="res://Scripts/main_menu.gd" id="1_28flt"]
-[ext_resource type="Texture2D" uid="uid://6y1dr50jugem" path="res://Images/classroom.png" id="2_48xlc"]
+[ext_resource type="Texture2D" uid="uid://cktrd6e8vbvjx" path="res://Images/classroom2.png" id="2_48xlc"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_48xlc"]
 font_size = 128

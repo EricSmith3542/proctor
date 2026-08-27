@@ -3,10 +3,28 @@
 [ext_resource type="Script" uid="uid://bv7pdf45kb54l" path="res://Scripts/student.gd" id="1_5fjsm"]
 [ext_resource type="Texture2D" uid="uid://bjatksqobhied" path="res://Images/circle.png" id="1_aycnr"]
 [ext_resource type="Texture2D" uid="uid://cpnh88txrpqsf" path="res://Images/eye.png" id="2_5fjsm"]
+[ext_resource type="Script" uid="uid://62s0wq70oulk" path="res://Scripts/sprite_randomizer.gd" id="3_hmaxr"]
 [ext_resource type="Texture2D" uid="uid://dnrstcbckptok" path="res://Images/pupil.png" id="3_v7y4v"]
+[ext_resource type="Texture2D" uid="uid://dlrofuipppby3" path="res://Images/Heads/head2.png" id="4_5kwnu"]
+[ext_resource type="Texture2D" uid="uid://k1suilnn1ehu" path="res://Images/Heads/head3.png" id="5_amux8"]
 [ext_resource type="Texture2D" uid="uid://c0g7c7tflduor" path="res://Images/mouth.png" id="5_yj8rq"]
+[ext_resource type="Texture2D" uid="uid://bxsksprpmbofx" path="res://Images/Heads/head4.png" id="6_hbpu0"]
 [ext_resource type="Texture2D" uid="uid://s4uorxip2gpy" path="res://Images/desk.png" id="6_yw8td"]
+[ext_resource type="Texture2D" uid="uid://c25jbnmrejxk" path="res://Images/Heads/head.png" id="7_5kwnu"]
 [ext_resource type="Texture2D" uid="uid://e2dd0g1cx2q1" path="res://Images/test.png" id="7_hmaxr"]
+[ext_resource type="Texture2D" uid="uid://bpje77s7aefn7" path="res://Images/Heads/head5.png" id="7_vblg0"]
+[ext_resource type="Texture2D" uid="uid://cl4qbfdi60wvj" path="res://Images/Heads/head6.png" id="9_e8k5j"]
+[ext_resource type="Texture2D" uid="uid://ciwmvobve2lk2" path="res://Images/Heads/head7.png" id="10_v587f"]
+[ext_resource type="Texture2D" uid="uid://c1crsvu85mpsl" path="res://Images/Heads/head8.png" id="11_oxjdl"]
+[ext_resource type="Texture2D" uid="uid://dmtmd2f3quja0" path="res://Images/Heads/head9.png" id="12_4h8r1"]
+[ext_resource type="Texture2D" uid="uid://dq4kqiem2svt6" path="res://Images/Heads/head10.png" id="13_obnxs"]
+[ext_resource type="Texture2D" uid="uid://be3diqjr2n8xd" path="res://Images/Heads/head11.png" id="14_88sdf"]
+[ext_resource type="Texture2D" uid="uid://c6uf7b5vk6a8q" path="res://Images/Heads/head12.png" id="15_gltd3"]
+[ext_resource type="Texture2D" uid="uid://d3lcq1fd0i1d0" path="res://Images/Noses/nose2.png" id="19_gltd3"]
+[ext_resource type="Texture2D" uid="uid://duvc71v55rr8q" path="res://Images/Noses/nose3.png" id="20_rehrr"]
+[ext_resource type="Texture2D" uid="uid://duaklftptbtwn" path="res://Images/Noses/nose.png" id="21_amyj0"]
+[ext_resource type="Texture2D" uid="uid://c60k0ocn6a61y" path="res://Images/Hats/hair.png" id="22_amyj0"]
+[ext_resource type="Texture2D" uid="uid://hr0a2vu30375" path="res://Images/Hats/propeller.png" id="23_mhy88"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v7y4v"]
 radius = 65.23228
@@ -25,6 +43,8 @@ shape = SubResource("CircleShape2D_v7y4v")
 [node name="Head" type="Sprite2D" parent="FullHead" unique_id=358801429]
 position = Vector2(64, 64)
 texture = ExtResource("1_aycnr")
+script = ExtResource("3_hmaxr")
+possible_sprites = Array[Texture2D]([ExtResource("4_5kwnu"), ExtResource("5_amux8"), ExtResource("6_hbpu0"), ExtResource("7_5kwnu"), ExtResource("7_vblg0"), ExtResource("9_e8k5j"), ExtResource("10_v587f"), ExtResource("11_oxjdl"), ExtResource("12_4h8r1"), ExtResource("13_obnxs"), ExtResource("14_88sdf"), ExtResource("15_gltd3")])
 
 [node name="Full Left Eye" type="Node2D" parent="FullHead/Head" unique_id=137908848]
 position = Vector2(-584, -299)
@@ -66,6 +86,17 @@ position = Vector2(10, -4)
 
 [node name="Mouth" type="Sprite2D" parent="FullHead/Head" unique_id=1815252956]
 texture = ExtResource("5_yj8rq")
+
+[node name="Nose" type="Sprite2D" parent="FullHead/Head" unique_id=876879865]
+texture = ExtResource("21_amyj0")
+script = ExtResource("3_hmaxr")
+possible_sprites = Array[Texture2D]([ExtResource("19_gltd3"), ExtResource("20_rehrr"), ExtResource("21_amyj0")])
+
+[node name="Hat" type="Sprite2D" parent="FullHead/Head" unique_id=658562075]
+texture = ExtResource("23_mhy88")
+script = ExtResource("3_hmaxr")
+possible_sprites = Array[Texture2D]([ExtResource("22_amyj0"), ExtResource("23_mhy88")])
+is_optional = true
 
 [node name="FullDesk" type="Node2D" parent="." unique_id=1616577547]
 

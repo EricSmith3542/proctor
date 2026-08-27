@@ -2,13 +2,13 @@
 
 importer="wav"
 type="AudioStreamWAV"
-uid="uid://bi1niiypotk53"
-path="res://.godot/imported/Test_longer.wav-6167e26934561c286fad9a670ac969ff.sample"
+uid="uid://biig6woc5ku16"
+path="res://.godot/imported/CoughCough.wav-c197ce48d2da6816fbb2416629b5ea3b.sample"
 
 [deps]
 
-source_file="res://Sounds/Test_longer.wav"
-dest_files=["res://.godot/imported/Test_longer.wav-6167e26934561c286fad9a670ac969ff.sample"]
+source_file="res://Sounds/CoughCough.wav"
+dest_files=["res://.godot/imported/CoughCough.wav-c197ce48d2da6816fbb2416629b5ea3b.sample"]
 
 [params]
 

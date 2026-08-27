@@ -66,22 +66,28 @@ func look_down():
 	right_pupil.position = right_look_down_pos
 	
 func talk(duration_seconds):
-	# TODO: play talking sounds for duration
-	play_sound(SoundManager.TEST_L, get_head_center())
 	talk_timer.start(duration_seconds)
 	open_mouth()
+	play_random_talk_sound()
 	start_mouth_change_timer()
 
+func play_random_talk_sound():
+	play_sound(SoundManager.POSSIBLE_TALK_SOUNDS.pick_random(), get_head_center())
+
 func stop_talking():
-	# TODO: kill talking sounds
 	talk_timer.stop()
+	mouth_change_timer.stop()
 	close_mouth()
 	
 func start_mouth_change_timer():
 	mouth_change_timer.start(randf_range(MIN_TALK_STATE_TIME, MAX_TALK_STATE_TIME))
 		
 func _on_mouth_change_timer_timeout() -> void:
-	close_mouth() if is_mouth_open else open_mouth()
+	if is_mouth_open:
+		close_mouth() 
+	else:
+		open_mouth()
+		play_random_talk_sound()
 	mouth_change_timer.start(randf_range(MIN_TALK_STATE_TIME, MAX_TALK_STATE_TIME))
 
 func _on_talk_timer_timeout() -> void:
@@ -89,8 +95,7 @@ func _on_talk_timer_timeout() -> void:
 	close_mouth()
 	
 func cough():
-	# TODO: PLAY COUGH SOUND
-	play_sound(SoundManager.TEST, get_head_center())
+	play_sound(SoundManager.COUGH, get_head_center())
 	open_mouth()
 	cough_timer.start()
 	await cough_timer.timeout

@@ -16,18 +16,6 @@ extends Node2D
 @export var level_number := 1
 @export var exam_time_seconds := 60
 var remaining_exam_time := exam_time_seconds
-@export var number_of_students = 8
-@export_range(1, 100, 1) var rows_of_desks : int = 3
-@export_range(1, 100, 1) var cols_of_desks : int = 3
-@export var fixed_cheat_time_seconds = 5
-@export var action_wave_frequency := 1
-@export var action_wave_jitter := 3
-@export var cheat_frequency := .1
-@export_range(1, 100, 1, "or_greater") var max_actions_per_wave := 1
-@export_range(1, 100, 1, "or_greater") var min_actions_per_wave := 1
-
-enum Actions {LOOK_DOWN, LOOK_FORWARD, LOOK_LEFT, LOOK_RIGHT, TALK, COUGH}
-@export var allowed_actions:Array[Actions] = [Actions.LOOK_DOWN, Actions.LOOK_FORWARD, Actions.LOOK_LEFT, Actions.LOOK_RIGHT]
 
 var completing_level := false
 var cheats_stopped := 0
@@ -39,7 +27,7 @@ signal level_complete(grade, level)
 func _ready() -> void:
 	find_and_connect_unlock_tracker()
 	connect_exam_end_signals()
-	classroom.prepare_classroom(number_of_students, rows_of_desks, cols_of_desks, fixed_cheat_time_seconds, action_wave_frequency, cheat_frequency, max_actions_per_wave, min_actions_per_wave, action_wave_jitter, allowed_actions)
+	classroom.prepare_classroom(exam_time_seconds)
 
 func connect_exam_end_signals():
 	exam_end_ui_panel.connect_continue_pressed_signal(_on_button_pressed)

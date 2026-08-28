@@ -14,24 +14,39 @@ signal failed_accusation_update(accusation_count)
 @onready var student_container = $StudentContainer
 @onready var wave_timer = $WaveTimer
 
+@export var number_of_students = 8
+@export_range(1, 100, 1) var rows_of_desks : int = 3
+@export_range(1, 100, 1) var cols_of_desks : int = 3
+@export var fixed_cheat_time_seconds = 5
+@export var action_wave_frequency := 1
+@export var action_wave_jitter := 3
+@export var cheat_frequency := .1
+@export_range(1, 100, 1, "or_greater") var max_actions_per_wave := 1
+@export_range(1, 100, 1, "or_greater") var min_actions_per_wave := 1
+
+enum Actions {LOOK_DOWN, LOOK_FORWARD, LOOK_LEFT, LOOK_RIGHT, TALK, COUGH}
+@export var allowed_actions:Array[Actions] = [Actions.LOOK_DOWN, Actions.LOOK_FORWARD, Actions.LOOK_LEFT, Actions.LOOK_RIGHT]
+
+@export var action_slot_time_seconds := .5
+var action_slots = []
+@export var action_slots_per_cheat := 1
+
+@export_range(0, 100, 1, "or_greater") var max_paired_action_slot_spread := 0
+
+enum Action_Strategy {RANDOM, RANDOM_CHEAT, DOUBLE_CHEAT, SPREAD_DOUBLE_CHEAT}
+@export var strategies:Array[Action_Strategy] = []
+
+@export var min_cheat_separation_slots := 5
+@export var min_non_cheat_separation_slots := 5
+
 var present_indices = []
 var active_cheaters = {}
 var successful_cheats = 0
 var false_accusations = 0
 var exam_in_progress = false
 
-var number_of_students = 1
-
-var rows_of_desks := 1
-var cols_of_desks := 1
-var fixed_cheat_time_seconds := 5
 var action_frequency := 1
-var cheat_frequency := .1
-var max_actions_per_wave := 1
-var min_actions_per_wave := 1
-
 var action_wave_jitter_seconds = 3
-var allowed_actions = []
 
 # This is no longer a difficulty related control and just dicates behavior pre-exam
 var max_random_wait_seconds = 15
@@ -40,16 +55,28 @@ var max_random_wait_seconds = 15
 func _ready() -> void:
 	super()
 	
-func prepare_classroom(num_students, rows, cols, cheat_time, a_freq, c_freq, max_action, min_action, jitter, actions):
-	number_of_students = num_students
-	rows_of_desks = rows
-	cols_of_desks = cols
-	fixed_cheat_time_seconds = cheat_time
-	max_actions_per_wave = min(max_action, num_students)
-	min_actions_per_wave = min(min_action, num_students)
-	action_wave_jitter_seconds = jitter
-	allowed_actions = actions
-	make_students()		
+class ActionPlan:
+	var action: Actions = Actions.LOOK_DOWN
+	var student_index: int = -1
+	var action_slot_duration: int = 1
+	var is_cheat: bool = false
+	
+	func _init(action_, student_index_, duration_, is_cheat_) -> void:
+		action = action_
+		student_index = student_index_
+		action_slot_duration = duration_
+		is_cheat = is_cheat_
+		
+	func _to_string() -> String:
+		return "Student " + str(student_index) + " takes " + str(Actions.find_key(action)) + " for " + str(action_slot_duration) + " slots"
+
+func execute_action_plan(plan:ActionPlan):
+	var student = get_student_by_index(plan.student_index)
+	student.perform_action(plan.action, -1, plan.action_slot_duration * action_slot_time_seconds)
+	
+func prepare_classroom(exam_time_seconds):
+	make_students()
+	make_all_action_plans(exam_time_seconds)
 		
 func make_students():
 	var area_bounds = $StudentArea/StudentAreaShape.shape.size
@@ -90,6 +117,192 @@ func make_students():
 			student.mark_absent()
 		else:
 			prepare_student(student, i)
+		
+func make_all_action_plans(exam_time_seconds):	
+	for i in range(exam_time_seconds/action_slot_time_seconds):
+		action_slots.append([])
+		
+	for strategy in strategies:
+		apply_strategy(strategy)
+		
+	print("FINAL ACTION PLAN: ", action_slots)
+		
+func apply_strategy(strategy):
+	match(strategy):
+		Action_Strategy.RANDOM:
+			pass
+		Action_Strategy.RANDOM_CHEAT:
+			pass
+		Action_Strategy.DOUBLE_CHEAT:
+			pass
+		Action_Strategy.SPREAD_DOUBLE_CHEAT:
+			apply_spread_double_cheat()
+			
+func apply_spread_double_cheat():
+	#TODO these could probably just be calc'd immediately and available everywhere in class
+	var window_size = 1 + max_paired_action_slot_spread
+	var possible_window_positions = range(action_slots.size() - window_size)
+	possible_window_positions.shuffle()
+			
+	var student_options = present_indices.duplicate()
+	var action_applied = false
+	print("All present students: ", student_options)
+	while not action_applied and student_options.size() > 0:
+		var random_student_index = pop_random(student_options)
+		print("Picked student ", random_student_index, ". REMAINING: ", student_options)
+		var random_student_cheat_actions = get_possible_cheating_actions_for_student(random_student_index)
+		if random_student_cheat_actions.size() > 0:
+			print("Student ", random_student_index, " can cheat: ", random_student_cheat_actions)
+			var spread_students = get_spread_present_students_for_student(random_student_index)
+			print("Student ", random_student_index, " is not adjacent to ", spread_students)
+			for other_index in spread_students:
+				var other_cheat_actions = get_possible_cheating_actions_for_student(other_index)
+				if other_cheat_actions.size() > 0:
+					print("Other student ", other_index, " can cheat: ", other_cheat_actions)
+					# Determine action slot window and randomly check all possible window positions, picking first one
+					for window_position in possible_window_positions:
+						if try_apply_multi_cheat_in_window([random_student_index, other_index], window_position, window_size):
+							action_applied = true
+							break
+				else:
+					print("Other student ", other_index, " cant cheat")
+				if action_applied:
+					break
+		else:
+			print("Student ", random_student_index, " cant cheat")
+	
+	if not action_applied:
+		print("Spread double cheat failed to be applied. Fallback to normal double cheat")
+
+func try_apply_multi_cheat_in_window(cheater_indicies, window_position, window_size):
+	if window_position + action_slots_per_cheat >= action_slots.size():
+		print("No possible cheats with window position ", window_position, " and cheat duration of ", action_slots_per_cheat, " slots with ", action_slots.size(), " total slots.")
+		return false
+				
+	var plan_slot_map = {}
+	for cheater_index in cheater_indicies:
+		var ready_slots_for_cheater = get_readied_slots_for_student_in_window(cheater_index, window_position, window_size)
+		if ready_slots_for_cheater.size() > 0:
+			var cheat_slots_for_cheater = ready_slots_for_cheater.filter(func(slot_index): return slot_index + action_slots_per_cheat - 1 < action_slots.size())
+			if cheat_slots_for_cheater.size() > 0:
+				var slot = cheat_slots_for_cheater.pick_random()
+				var action_plan = ActionPlan.new(get_possible_cheating_actions_for_student(cheater_index).pick_random(), cheater_index, action_slots_per_cheat, true)
+				var slot_plan_object = {"slot": slot, "plan": action_plan}
+				plan_slot_map[cheater_index] = slot_plan_object
+				print("Added plan for cheater ", cheater_index, ": ", slot_plan_object)
+	
+	print("Students with plans: ", plan_slot_map.keys(), " All cheaters: ", cheater_indicies)
+	if plan_slot_map.keys().size() == cheater_indicies.size():
+		apply_plans(plan_slot_map)
+		print("Applied plan: ", plan_slot_map)
+		return true
+	else:
+		print("Failed to apply multi cheat for ", cheater_indicies, " in window ", get_action_slot_indicies_in_window(window_position, window_size))
+		return false
+			
+func apply_plans(plan_slot_map):
+	for student_index in plan_slot_map.keys():
+		var student_plan = plan_slot_map[student_index]
+		action_slots[student_plan["slot"]].append(student_plan["plan"])
+			
+# Returns all action slots in the window that are not covered by the duration of previous action plans for the student
+func get_readied_slots_for_student_in_window(student_index, window_position, window_size):
+	var readied_slot_indicies = get_action_slot_indicies_in_window(window_position, window_size)
+	var window_end = window_position + window_size - 1
+	for i in action_slots.size() :
+		var action_plans = action_slots[i]
+		for action_plan in action_plans:
+			if action_plan.is_cheat:
+				print("Before filter: ", readied_slot_indicies)
+				var filtered_indicies = []
+				for ready_slot in readied_slot_indicies:
+					if ready_slot > i and ready_slot - min_cheat_separation_slots >= i:
+						filtered_indicies.append(ready_slot)
+					elif ready_slot <= i and ready_slot + min_cheat_separation_slots <= i:
+						filtered_indicies.append(ready_slot)
+				readied_slot_indicies = filtered_indicies
+				print("After filter: ", readied_slot_indicies)
+			if action_plan.student_index == student_index:
+				var slots_used_by_action = range(i, action_plan.action_slot_duration + i)
+				readied_slot_indicies = readied_slot_indicies.filter(func(index): return index not in slots_used_by_action)
+			if readied_slot_indicies.size() <= 0:
+				return []
+	return readied_slot_indicies
+
+func get_action_slot_indicies_in_window(window_position, window_size):
+	return range(action_slots.size()).slice(window_position, window_size + window_position) 
+
+func get_possible_cheating_actions_for_student(student_index):
+	var cheat_actions = []
+	for action in allowed_actions:
+		match(action):
+			Actions.LOOK_DOWN, Actions.LOOK_FORWARD, Actions.COUGH:
+				continue
+			Actions.LOOK_LEFT:
+				if has_neighbor_left(student_index):
+					cheat_actions.append(Actions.LOOK_LEFT)
+			Actions.LOOK_RIGHT:
+				if has_neighbor_right(student_index):
+					cheat_actions.append(Actions.LOOK_RIGHT)
+			Actions.TALK:
+				if has_any_neighbor(student_index):
+					cheat_actions.append(Actions.TALK)
+	return cheat_actions
+	
+func get_spread_present_students_for_student(student_index):
+	var spread_indicies = []
+	for i in present_indices:
+		if i == student_index or is_adjacent_index(i, student_index):
+			#print(i, " is adjacent to ", student_index)
+			pass
+		else:
+			if get_student_by_index(i).is_present:
+				spread_indicies.append(i)
+				#print(i, " is NOT adjacent to ", student_index)
+	return spread_indicies
+	
+# is index1 adjacent to index2
+func is_adjacent_index(index1, index2):
+	#up
+	if (not is_top_row_index(index2)) and index2 - cols_of_desks == index1:
+		return true
+	#down
+	if (not is_bottom_row_index(index2)) and index2 + cols_of_desks == index1:
+		return true
+	#left
+	if (not is_left_col_index(index2)) and index2 - 1 == index1:
+		return true
+	#right
+	if (not is_right_col_index(index2)) and index2 + 1 == index1:
+		return true
+	#up left
+	if (not (is_top_row_index(index2) or is_left_col_index(index2))) and index2 - cols_of_desks - 1 == index1:
+		return true
+	#up right
+	if (not (is_top_row_index(index2) or is_right_col_index(index2))) and index2 - cols_of_desks + 1 == index1:
+		return true
+	#down left
+	if (not (is_bottom_row_index(index2) or is_left_col_index(index2))) and index2 + cols_of_desks - 1 == index1:
+		return true
+	#down right
+	if (not (is_bottom_row_index(index2) or is_right_col_index(index2))) and index2 + cols_of_desks + 1 == index1:
+		return true
+	return false
+	
+func is_top_row_index(index):
+	return rows_of_desks == 1 or index / cols_of_desks == 0
+
+func is_bottom_row_index(index):
+	return rows_of_desks == 1 or index / cols_of_desks == rows_of_desks - 1
+
+func is_right_col_index(index):
+	return index % cols_of_desks == cols_of_desks - 1
+	
+func is_left_col_index(index):
+	return index % cols_of_desks == 0
+
+func pop_random(array):
+	return array.pop_at(randi_range(0, array.size()-1))
 			
 func prepare_student(student, index):
 	student.index = index
@@ -98,7 +311,7 @@ func prepare_student(student, index):
 	start_random_action_random_wait(student)
 			
 func start_random_action_random_wait(student, fixed_cheat_time = true):
-	var random_action = range(Level.Actions.size()).pick_random()
+	var random_action = range(Actions.size()).pick_random()
 	start_action_random_wait(student, random_action, exam_in_progress and fixed_cheat_time)
 
 func start_action_random_wait(student, action, fixed_cheat_time = true):
@@ -160,7 +373,7 @@ func start_actions():
 			var safe_actions = get_safe_actions_for_student(student)
 			picked_action = safe_actions.pick_random()
 			student.perform_action_after_wait(picked_action, -1, get_random_talk_seconds(), wait_before_action)
-		print("Student ", student_index, " taking action ", Level.Actions.find_key(picked_action), " in ", wait_before_action,  "seconds. CHEATING = ", should_cheat)
+		print("Student ", student_index, " taking action ", Actions.find_key(picked_action), " in ", wait_before_action,  "seconds. CHEATING = ", should_cheat)
 			
 func get_cheating_actions_for_student(student):
 	return allowed_actions.filter(is_student_cheating.bind(student))
@@ -188,7 +401,7 @@ func handle_if_cheating(student):
 		return true
 	return false
 		
-func get_student_by_index(index):
+func get_student_by_index(index) -> Student:
 	return student_container.get_child(index)
 	
 func get_random_wait_seconds() -> float:
@@ -205,37 +418,37 @@ func is_student_cheating(action, student):
 		return false
 		
 	match(action):
-		Level.Actions.LOOK_DOWN, Level.Actions.LOOK_FORWARD, Level.Actions.COUGH:
+		Actions.LOOK_DOWN, Actions.LOOK_FORWARD, Actions.COUGH:
 			return false
-		Level.Actions.LOOK_LEFT:
-			return has_neighbor_left(student)
-		Level.Actions.LOOK_RIGHT:
-			return has_neighbor_right(student)
-		Level.Actions.TALK:
-			return has_any_neighbor(student)
+		Actions.LOOK_LEFT:
+			return has_neighbor_left(student.index)
+		Actions.LOOK_RIGHT:
+			return has_neighbor_right(student.index)
+		Actions.TALK:
+			return has_any_neighbor(student.index)
 			
-func has_neighbor_left(student):
-	if student.index % cols_of_desks == 0:
+func has_neighbor_left(student_index):
+	if student_index % cols_of_desks == 0:
 		return false
-	return get_student_by_index(student.index - 1).is_present
+	return get_student_by_index(student_index - 1).is_present
 	
-func has_neighbor_right(student):
-	if student.index % cols_of_desks == cols_of_desks - 1:
+func has_neighbor_right(student_index):
+	if student_index % cols_of_desks == cols_of_desks - 1:
 		return false
-	return get_student_by_index(student.index + 1).is_present
+	return get_student_by_index(student_index + 1).is_present
 	
-func has_neighbor_up(student):
-	if rows_of_desks == 1 or student.index / cols_of_desks == 0:
+func has_neighbor_up(student_index):
+	if rows_of_desks == 1 or student_index / cols_of_desks == 0:
 		return false
-	return get_student_by_index(student.index - cols_of_desks).is_present
+	return get_student_by_index(student_index - cols_of_desks).is_present
 	
-func has_neighbor_down(student):
-	if rows_of_desks == 1 or student.index / cols_of_desks == rows_of_desks - 1:
+func has_neighbor_down(student_index):
+	if rows_of_desks == 1 or student_index / cols_of_desks == rows_of_desks - 1:
 		return false
-	return get_student_by_index(student.index + cols_of_desks).is_present
+	return get_student_by_index(student_index + cols_of_desks).is_present
 	
 func has_any_neighbor(student):
-	return has_neighbor_down(student) or has_neighbor_up(student) or has_neighbor_left(student) or has_neighbor_right(student)
+	return has_neighbor_down(student.index) or has_neighbor_up(student.index) or has_neighbor_left(student.index) or has_neighbor_right(student.index)
 
 func check_for_fail():
 	if false_accusations + successful_cheats >= 3:
@@ -260,7 +473,7 @@ func stop_all_student_actions():
 
 func _on_student_requests_action(student):
 	if handle_if_cheating(student):
-		start_action_random_wait(student, Level.Actions.LOOK_DOWN)
+		start_action_random_wait(student, Actions.LOOK_DOWN)
 	else:
 		start_random_action_random_wait(student)
 

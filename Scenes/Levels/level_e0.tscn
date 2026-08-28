@@ -6,7 +6,6 @@
 grade = "e"
 level_number = 0
 exam_time_seconds = 30
-fixed_cheat_time_seconds = 7
-action_wave_frequency = 5
-cheat_frequency = 0.4
-max_actions_per_wave = 3
+
+[node name="Classroom" parent="." index="0" unique_id=1353106248]
+strategies = Array[int]([3])

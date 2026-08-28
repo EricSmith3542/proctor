@@ -37,17 +37,17 @@ func perform_action_after_wait(action_number, new_action_request_time, duration,
 
 func perform_action(action_number, new_action_request_time, duration):
 	match(action_number):
-		Level.Actions.LOOK_DOWN:
+		Classroom.Actions.LOOK_DOWN:
 			look_down()
-		Level.Actions.LOOK_FORWARD:
+		Classroom.Actions.LOOK_FORWARD:
 			look_forward()
-		Level.Actions.LOOK_LEFT:
+		Classroom.Actions.LOOK_LEFT:
 			look_left()
-		Level.Actions.LOOK_RIGHT:
+		Classroom.Actions.LOOK_RIGHT:
 			look_right()
-		Level.Actions.TALK:
+		Classroom.Actions.TALK:
 			talk(duration)
-		Level.Actions.COUGH:
+		Classroom.Actions.COUGH:
 			cough()
 	
 	if new_action_request_time != -1:

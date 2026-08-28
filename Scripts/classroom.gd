@@ -122,32 +122,125 @@ func make_all_action_plans(exam_time_seconds):
 	for i in range(exam_time_seconds/action_slot_time_seconds):
 		action_slots.append([])
 		
-	for strategy in strategies:
-		apply_strategy(strategy)
-		
-	print("FINAL ACTION PLAN: ", action_slots)
-		
-func apply_strategy(strategy):
-	match(strategy):
-		Action_Strategy.RANDOM:
-			pass
-		Action_Strategy.RANDOM_CHEAT:
-			pass
-		Action_Strategy.DOUBLE_CHEAT:
-			pass
-		Action_Strategy.SPREAD_DOUBLE_CHEAT:
-			apply_spread_double_cheat()
-			
-func apply_spread_double_cheat():
-	#TODO these could probably just be calc'd immediately and available everywhere in class
 	var window_size = 1 + max_paired_action_slot_spread
 	var possible_window_positions = range(action_slots.size() - window_size)
 	possible_window_positions.shuffle()
-			
+		
+	for strategy in strategies:
+		if not apply_strategy(strategy, window_size, possible_window_positions):
+			print("FAILED TO APPLY STRATEGY AND ALL FALLBACKS. PLAN COMPLETE")
+			break
+		
+	print_action_plan()
+	
+func print_action_plan():
+	var msg = ""
+	for i in action_slots.size():
+		msg += "Slot " + str(i) + ":\n"
+		var slot = action_slots[i]
+		for plan in slot:
+			msg += str(plan) + " | "
+		msg += "\n"
+	print(msg)
+		
+func apply_strategy(strategy, window_size, possible_window_positions):
+	possible_window_positions.shuffle()
 	var student_options = present_indices.duplicate()
-	var action_applied = false
+	var strategy_applied = false
 	print("All present students: ", student_options)
-	while not action_applied and student_options.size() > 0:
+	
+	match(strategy):
+		Action_Strategy.RANDOM:
+			strategy_applied = apply_random_non_cheat(student_options)
+		Action_Strategy.RANDOM_CHEAT:
+			strategy_applied = apply_random_cheat(student_options)
+			if not strategy_applied:
+				print("Random cheat failed to be applied. Fallback to single non-cheat")
+				return apply_strategy(Action_Strategy.RANDOM, window_size, possible_window_positions)
+		Action_Strategy.DOUBLE_CHEAT:
+			strategy_applied = apply_double_cheat(window_size, possible_window_positions, student_options)
+			if not strategy_applied:
+				print("Double cheat failed to be applied. Fallback to single cheat")
+				return apply_strategy(Action_Strategy.RANDOM_CHEAT, window_size, possible_window_positions)
+		Action_Strategy.SPREAD_DOUBLE_CHEAT:
+			strategy_applied = apply_spread_double_cheat(window_size, possible_window_positions, student_options)
+			if not strategy_applied:
+				print("Spread double cheat failed to be applied. Fallback to normal double cheat")
+				return apply_strategy(Action_Strategy.DOUBLE_CHEAT, window_size, possible_window_positions)
+	return strategy_applied
+		
+func apply_random_non_cheat(student_options):
+	while student_options.size() > 0:
+		var random_student_index = pop_random(student_options)
+		print("Picked student ", random_student_index, ". REMAINING: ", student_options)
+		var cheat_actions = get_possible_cheating_actions_for_student(random_student_index)
+		var random_student_actions = allowed_actions.filter(func(action): return action not in cheat_actions)
+		if random_student_actions.size() > 0:
+			if try_apply_action(random_student_index, random_student_actions.pick_random()):
+				return true
+	return false
+	
+func try_apply_action(student_index, action):
+	var ready_slots = get_readied_slots_for_student_in_window(student_index, 0, action_slots.size(), false)
+	if ready_slots.size() > 0:
+		var slot = ready_slots.pick_random()
+		var action_plan = ActionPlan.new(action, student_index, randi_range(1,action_slots_per_cheat), false)
+		action_slots[slot].append(action_plan)
+		return true
+	return false
+			
+func apply_random_cheat(student_options):
+	while student_options.size() > 0:
+		var random_student_index = pop_random(student_options)
+		print("Picked student ", random_student_index, ". REMAINING: ", student_options)
+		var random_student_cheat_actions = get_possible_cheating_actions_for_student(random_student_index)
+		if random_student_cheat_actions.size() > 0:
+			if try_apply_cheat(random_student_index, random_student_cheat_actions.pick_random()):
+				return true
+		else:
+			print("Student ", random_student_index, " cant cheat")
+	return false
+	
+func try_apply_cheat(cheater_index, cheat_action):
+	var ready_slots_for_cheater = get_readied_slots_for_student_in_window(cheater_index, 0, action_slots.size(), true)
+	if ready_slots_for_cheater.size() > 0:
+		var cheat_slots_for_cheater = ready_slots_for_cheater.filter(func(slot_index): return slot_index + action_slots_per_cheat - 1 < action_slots.size())
+		if cheat_slots_for_cheater.size() > 0:
+			var slot = cheat_slots_for_cheater.pick_random()
+			var action_plan = ActionPlan.new(get_possible_cheating_actions_for_student(cheater_index).pick_random(), cheater_index, action_slots_per_cheat, true)
+			action_slots[slot].append(action_plan)
+			return true
+	return false
+			
+	
+func apply_double_cheat(window_size, possible_window_positions, student_options):
+	var all_student_options = student_options.duplicate()
+	while student_options.size() > 0:
+		var random_student_index = pop_random(student_options)
+		print("Picked student ", random_student_index, ". REMAINING: ", student_options)
+		var random_student_cheat_actions = get_possible_cheating_actions_for_student(random_student_index)
+		if random_student_cheat_actions.size() > 0:
+			var other_students = all_student_options.duplicate()
+			other_students.erase(random_student_index)
+			print("Students that are not student ", random_student_index, " are ", other_students)
+			for other_index in other_students:
+				var other_cheat_actions = get_possible_cheating_actions_for_student(other_index)
+				if other_cheat_actions.size() > 0:
+					print("Other student ", other_index, " can cheat: ", other_cheat_actions)
+					# Determine action slot window and randomly check all possible window positions, picking first one
+					for window_position in possible_window_positions:
+						if try_apply_multi_cheat_in_window([random_student_index, other_index], window_position, window_size):
+							return true
+				else:
+					print("Other student ", other_index, " cant cheat")
+		else:
+			print("Student ", random_student_index, " cant cheat")
+	return false
+
+func apply_spread_double_cheat(window_size, possible_window_positions, student_options):
+	possible_window_positions.shuffle()
+	
+	while student_options.size() > 0:
 		var random_student_index = pop_random(student_options)
 		print("Picked student ", random_student_index, ". REMAINING: ", student_options)
 		var random_student_cheat_actions = get_possible_cheating_actions_for_student(random_student_index)
@@ -162,17 +255,12 @@ func apply_spread_double_cheat():
 					# Determine action slot window and randomly check all possible window positions, picking first one
 					for window_position in possible_window_positions:
 						if try_apply_multi_cheat_in_window([random_student_index, other_index], window_position, window_size):
-							action_applied = true
-							break
+							return true
 				else:
 					print("Other student ", other_index, " cant cheat")
-				if action_applied:
-					break
 		else:
 			print("Student ", random_student_index, " cant cheat")
-	
-	if not action_applied:
-		print("Spread double cheat failed to be applied. Fallback to normal double cheat")
+	return false
 
 func try_apply_multi_cheat_in_window(cheater_indicies, window_position, window_size):
 	if window_position + action_slots_per_cheat >= action_slots.size():
@@ -181,7 +269,7 @@ func try_apply_multi_cheat_in_window(cheater_indicies, window_position, window_s
 				
 	var plan_slot_map = {}
 	for cheater_index in cheater_indicies:
-		var ready_slots_for_cheater = get_readied_slots_for_student_in_window(cheater_index, window_position, window_size)
+		var ready_slots_for_cheater = get_readied_slots_for_student_in_window(cheater_index, window_position, window_size, true)
 		if ready_slots_for_cheater.size() > 0:
 			var cheat_slots_for_cheater = ready_slots_for_cheater.filter(func(slot_index): return slot_index + action_slots_per_cheat - 1 < action_slots.size())
 			if cheat_slots_for_cheater.size() > 0:
@@ -197,7 +285,7 @@ func try_apply_multi_cheat_in_window(cheater_indicies, window_position, window_s
 		print("Applied plan: ", plan_slot_map)
 		return true
 	else:
-		print("Failed to apply multi cheat for ", cheater_indicies, " in window ", get_action_slot_indicies_in_window(window_position, window_size))
+		#print("Failed to apply multi cheat for ", cheater_indicies, " in window ", get_action_slot_indicies_in_window(window_position, window_size))
 		return false
 			
 func apply_plans(plan_slot_map):
@@ -206,14 +294,13 @@ func apply_plans(plan_slot_map):
 		action_slots[student_plan["slot"]].append(student_plan["plan"])
 			
 # Returns all action slots in the window that are not covered by the duration of previous action plans for the student
-func get_readied_slots_for_student_in_window(student_index, window_position, window_size):
+func get_readied_slots_for_student_in_window(student_index, window_position, window_size, is_cheating):
 	var readied_slot_indicies = get_action_slot_indicies_in_window(window_position, window_size)
 	var window_end = window_position + window_size - 1
 	for i in action_slots.size() :
 		var action_plans = action_slots[i]
 		for action_plan in action_plans:
-			if action_plan.is_cheat:
-				print("Before filter: ", readied_slot_indicies)
+			if action_plan.is_cheat and is_cheating:
 				var filtered_indicies = []
 				for ready_slot in readied_slot_indicies:
 					if ready_slot > i and ready_slot - min_cheat_separation_slots >= i:
@@ -221,7 +308,14 @@ func get_readied_slots_for_student_in_window(student_index, window_position, win
 					elif ready_slot <= i and ready_slot + min_cheat_separation_slots <= i:
 						filtered_indicies.append(ready_slot)
 				readied_slot_indicies = filtered_indicies
-				print("After filter: ", readied_slot_indicies)
+			elif not action_plan.is_cheat and not is_cheating:
+				var filtered_indicies = []
+				for ready_slot in readied_slot_indicies:
+					if ready_slot > i and ready_slot - min_non_cheat_separation_slots >= i:
+						filtered_indicies.append(ready_slot)
+					elif ready_slot <= i and ready_slot + min_non_cheat_separation_slots <= i:
+						filtered_indicies.append(ready_slot)
+				readied_slot_indicies = filtered_indicies
 			if action_plan.student_index == student_index:
 				var slots_used_by_action = range(i, action_plan.action_slot_duration + i)
 				readied_slot_indicies = readied_slot_indicies.filter(func(index): return index not in slots_used_by_action)
@@ -447,8 +541,8 @@ func has_neighbor_down(student_index):
 		return false
 	return get_student_by_index(student_index + cols_of_desks).is_present
 	
-func has_any_neighbor(student):
-	return has_neighbor_down(student.index) or has_neighbor_up(student.index) or has_neighbor_left(student.index) or has_neighbor_right(student.index)
+func has_any_neighbor(student_index):
+	return has_neighbor_down(student_index) or has_neighbor_up(student_index) or has_neighbor_left(student_index) or has_neighbor_right(student_index)
 
 func check_for_fail():
 	if false_accusations + successful_cheats >= 3:

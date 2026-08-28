@@ -212,7 +212,6 @@ func try_apply_cheat(cheater_index, cheat_action):
 			return true
 	return false
 			
-	
 func apply_double_cheat(window_size, possible_window_positions, student_options):
 	var all_student_options = student_options.duplicate()
 	while student_options.size() > 0:
@@ -402,6 +401,7 @@ func prepare_student(student, index):
 	student.index = index
 	student.accused_of_cheating.connect(_on_student_accused.bind(index))
 	student.get_node("Timer").timeout.connect(_on_student_requests_action.bind(student))
+	await get_tree().create_timer(randf_range(.2, 3.0)).timeout
 	start_random_action_random_wait(student)
 			
 func start_random_action_random_wait(student, fixed_cheat_time = true):

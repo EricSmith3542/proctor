@@ -1,6 +1,9 @@
 extends Node2D
 
 const GRADE_LEVEL_LETTERS = ["k", "e", "m", "h"]
+const ONE_STAR = preload("res://Images/1stars.png")
+const TWO_STAR = preload("res://Images/2stars.png")
+const THREE_STAR = preload("res://Images/3stars.png")
 
 @onready var grade_levels := $"CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels".get_children()
 @onready var volume_number_text := $"CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer/Volume Number"
@@ -15,17 +18,28 @@ func check_unlocks():
 		var grade_letter = GRADE_LEVEL_LETTERS[grade]
 		var grade_level_buttons := grade_levels[grade].get_node("Level Buttons").get_children()
 		for level in range(grade_level_buttons.size()):
-			var button := grade_level_buttons[level]
-			if (grade == 0 and level == 0) or is_previous_level_completed(grade_letter, level):
+			var button_star_container = grade_level_buttons[level]
+			var button := button_star_container.get_child(0)
+			if (grade == 0 and level == 0) or (get_previous_level_score(grade_letter, level) > 0):
 				button.disabled = false
 				button.pressed.connect(_on_button_pressed.bind(grade_letter+str(level)))
+				var stars := button_star_container.get_child(1)
+				match(UnlockTracker.levels_completed[grade_letter+str(level)]):
+					1:
+						stars.texture = ONE_STAR
+					2:
+						stars.texture = TWO_STAR
+					3:
+						stars.texture = THREE_STAR
+			else:
+				button.disabled = true
 				
 func check_volume_settings():
 	var volume = int(db_to_linear(AudioServer.get_bus_volume_db(0)) * 100)
 	set_volume_text(volume)
 	$"CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer/Volume Slider".value = volume
 
-func is_previous_level_completed(grade, level):
+func get_previous_level_score(grade, level):
 	if level == 0:
 		#TODO this wont work if a grade level contains more than 3 levels
 		return UnlockTracker.levels_completed[previous_grade_letter(grade)+str(2)]

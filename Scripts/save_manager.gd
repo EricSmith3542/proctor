@@ -1,5 +1,6 @@
 extends Node2D
 
+const SAVE_FILE_PATH = "user://save_game.save"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -15,7 +16,7 @@ func _on_game_quit():
 	get_tree().quit()
 	
 func save_all():
-	var save_file = FileAccess.open("user://savegame.save", FileAccess.WRITE)
+	var save_file = FileAccess.open(SAVE_FILE_PATH, FileAccess.WRITE)
 	var data = {}
 	save_progress(save_file, data)
 	save_settings(save_file, data)
@@ -32,9 +33,9 @@ func save_settings(save_file, data):
 		}
 	
 func load_game():
-	if not FileAccess.file_exists("user://savegame.save"):
+	if not FileAccess.file_exists(SAVE_FILE_PATH):
 		return
-	var data = JSON.parse_string(FileAccess.open("user://savegame.save", FileAccess.READ).get_line())
+	var data = JSON.parse_string(FileAccess.open(SAVE_FILE_PATH, FileAccess.READ).get_line())
 	load_progress(data)
 	load_settings(data)
 	

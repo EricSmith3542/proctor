@@ -70,13 +70,12 @@ class ActionPlan:
 
 func start_exam():
 	# TODO: post mvp this is where you would trigger picking up pencils
+	
 	# All students look down at start of exam
 	for student in student_container.get_children():
 		if student.is_present:
 			student.stop_performing_actions()
 			student.look_down()
-	exam_in_progress = true
-	
 	process_next_action_slot()
 	
 func process_next_action_slot():
@@ -431,8 +430,10 @@ func prepare_student(student, index):
 	student.index = index
 	student.accused_of_cheating.connect(_on_student_accused.bind(index))
 	student.get_node("Timer").timeout.connect(_on_student_requests_action.bind(student))
-	await get_tree().create_timer(randf_range(.2, 3.0)).timeout
-	start_random_action_random_wait(student)
+	var random_action = range(Actions.size()).pick_random()
+	student.perform_action_after_wait(random_action, get_random_wait_seconds(), get_random_talk_seconds(), randf_range(.2, 3.0))
+	#await get_tree().create_timer(randf_range(.2, 3.0)).timeout
+	#start_random_action_random_wait(student)
 			
 func start_random_action_random_wait(student):
 	var random_action = range(Actions.size()).pick_random()
@@ -540,9 +541,7 @@ func stop_all_student_actions():
 		student.stop_performing_actions()
 
 func _on_student_requests_action(student):
-	if handle_if_cheating(student):
-		start_action_random_wait(student, Actions.LOOK_DOWN)
-	else:
+	if not exam_in_progress:
 		start_random_action_random_wait(student)
 
 func _on_student_accused(index):

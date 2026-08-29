@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://b2ky2b2ksgs2k"]
 
 [ext_resource type="Script" uid="uid://caqta5rh2pyju" path="res://Scripts/main_menu.gd" id="1_28flt"]
+[ext_resource type="Texture2D" uid="uid://dnqlfwuuop44e" path="res://Images/0stars.png" id="2_1ehe0"]
 [ext_resource type="Texture2D" uid="uid://cktrd6e8vbvjx" path="res://Images/classroom2.png" id="2_48xlc"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_48xlc"]
@@ -62,23 +63,49 @@ text = "Kindergarten"
 
 [node name="Level Buttons" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten" unique_id=1152629697]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons" unique_id=292781704]
+[node name="VFlowContainer" type="VFlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons" unique_id=390991699]
+layout_mode = 2
+size_flags_horizontal = 6
+alignment = 1
+
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons/VFlowContainer" unique_id=292781704]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Exam 1"
 
-[node name="Button2" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons" unique_id=1635962677]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons/VFlowContainer" unique_id=1751860930]
+layout_mode = 2
+texture = ExtResource("2_1ehe0")
+
+[node name="VFlowContainer2" type="VFlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons" unique_id=1862553314]
+layout_mode = 2
+size_flags_horizontal = 6
+alignment = 1
+
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons/VFlowContainer2" unique_id=751433914]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-disabled = true
 text = "Exam 2"
 
-[node name="Button3" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons" unique_id=613800575]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons/VFlowContainer2" unique_id=279962141]
+layout_mode = 2
+texture = ExtResource("2_1ehe0")
+
+[node name="VFlowContainer3" type="VFlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons" unique_id=1772850153]
+layout_mode = 2
+size_flags_horizontal = 6
+alignment = 1
+
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons/VFlowContainer3" unique_id=611090543]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-disabled = true
 text = "Exam 3"
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Kindergarten/Level Buttons/VFlowContainer3" unique_id=1597816532]
+layout_mode = 2
+texture = ExtResource("2_1ehe0")
 
 [node name="Elementary" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels" unique_id=761356410]
 layout_mode = 2
@@ -89,26 +116,51 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 49
 text = "Elementary"
 
-[node name="Level Buttons" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary" unique_id=1589646690]
+[node name="Level Buttons" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary" unique_id=1904504021]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons" unique_id=997828303]
+[node name="VFlowContainer" type="VFlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons" unique_id=207658656]
+layout_mode = 2
+size_flags_horizontal = 6
+alignment = 1
+
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons/VFlowContainer" unique_id=1255223820]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-disabled = true
 text = "Exam 1"
 
-[node name="Button2" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons" unique_id=18307060]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons/VFlowContainer" unique_id=458592443]
+layout_mode = 2
+texture = ExtResource("2_1ehe0")
+
+[node name="VFlowContainer2" type="VFlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons" unique_id=615673190]
+layout_mode = 2
+size_flags_horizontal = 6
+alignment = 1
+
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons/VFlowContainer2" unique_id=1875233224]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-disabled = true
 text = "Exam 2"
 
-[node name="Button3" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons" unique_id=1069198524]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons/VFlowContainer2" unique_id=458270131]
+layout_mode = 2
+texture = ExtResource("2_1ehe0")
+
+[node name="VFlowContainer3" type="VFlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons" unique_id=613098088]
+layout_mode = 2
+size_flags_horizontal = 6
+alignment = 1
+
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons/VFlowContainer3" unique_id=813400192]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-disabled = true
 text = "Exam 3"
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Elementary/Level Buttons/VFlowContainer3" unique_id=551931063]
+layout_mode = 2
+texture = ExtResource("2_1ehe0")
 
 [node name="Middle" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels" unique_id=202988053]
 layout_mode = 2
@@ -119,26 +171,51 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 49
 text = "Middle School"
 
-[node name="Level Buttons" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle" unique_id=490521777]
+[node name="Level Buttons" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle" unique_id=1286805453]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons" unique_id=1524396704]
+[node name="VFlowContainer" type="VFlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons" unique_id=247005896]
+layout_mode = 2
+size_flags_horizontal = 6
+alignment = 1
+
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons/VFlowContainer" unique_id=942074285]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-disabled = true
 text = "Exam 1"
 
-[node name="Button2" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons" unique_id=778816227]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons/VFlowContainer" unique_id=373435856]
+layout_mode = 2
+texture = ExtResource("2_1ehe0")
+
+[node name="VFlowContainer2" type="VFlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons" unique_id=489504589]
+layout_mode = 2
+size_flags_horizontal = 6
+alignment = 1
+
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons/VFlowContainer2" unique_id=1330630028]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-disabled = true
 text = "Exam 2"
 
-[node name="Button3" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons" unique_id=1176347264]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons/VFlowContainer2" unique_id=1723702120]
+layout_mode = 2
+texture = ExtResource("2_1ehe0")
+
+[node name="VFlowContainer3" type="VFlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons" unique_id=291898200]
+layout_mode = 2
+size_flags_horizontal = 6
+alignment = 1
+
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons/VFlowContainer3" unique_id=151012102]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-disabled = true
 text = "Exam 3"
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/Middle/Level Buttons/VFlowContainer3" unique_id=1580212259]
+layout_mode = 2
+texture = ExtResource("2_1ehe0")
 
 [node name="High" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels" unique_id=918560380]
 layout_mode = 2
@@ -149,26 +226,51 @@ layout_mode = 2
 theme_override_font_sizes/font_size = 49
 text = "High School"
 
-[node name="Level Buttons" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High" unique_id=1777112433]
+[node name="Level Buttons" type="FlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High" unique_id=1720516719]
 layout_mode = 2
+size_flags_horizontal = 3
 
-[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons" unique_id=1244219411]
+[node name="VFlowContainer" type="VFlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons" unique_id=1850318973]
+layout_mode = 2
+size_flags_horizontal = 6
+alignment = 1
+
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons/VFlowContainer" unique_id=2120190912]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-disabled = true
 text = "Exam 1"
 
-[node name="Button2" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons" unique_id=1114033798]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons/VFlowContainer" unique_id=1197949691]
+layout_mode = 2
+texture = ExtResource("2_1ehe0")
+
+[node name="VFlowContainer2" type="VFlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons" unique_id=1677233168]
+layout_mode = 2
+size_flags_horizontal = 6
+alignment = 1
+
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons/VFlowContainer2" unique_id=831758493]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-disabled = true
 text = "Exam 2"
 
-[node name="Button3" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons" unique_id=1729729355]
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons/VFlowContainer2" unique_id=1218546916]
+layout_mode = 2
+texture = ExtResource("2_1ehe0")
+
+[node name="VFlowContainer3" type="VFlowContainer" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons" unique_id=2039822603]
+layout_mode = 2
+size_flags_horizontal = 6
+alignment = 1
+
+[node name="Button1" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons/VFlowContainer3" unique_id=1571336434]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
-disabled = true
 text = "Exam 3"
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels/High/Level Buttons/VFlowContainer3" unique_id=2111310152]
+layout_mode = 2
+texture = ExtResource("2_1ehe0")
 
 [node name="ExamSelectBackButton" type="Button" parent="CanvasLayer/ExamSelectUI/FlowContainer" unique_id=711265146]
 layout_mode = 2

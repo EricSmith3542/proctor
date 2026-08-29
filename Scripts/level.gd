@@ -22,7 +22,7 @@ var cheats_stopped := 0
 var false_accusations := 0
 var cheats_succeeded := 0
 
-signal level_complete(grade, level)
+signal level_complete(grade, level, score)
 
 func _ready() -> void:
 	find_and_connect_unlock_tracker()
@@ -74,6 +74,7 @@ func _on_button_pressed() -> void:
 	get_tree().change_scene_to_file("res://Scenes/main_menu.tscn")
 
 func _on_start_button_pressed():
+	classroom.exam_in_progress = true
 	await countdown_to_exam_start()
 	remaining_exam_time = exam_time_seconds
 	set_timer_text(remaining_exam_time)
@@ -103,13 +104,16 @@ func _on_exam_second_timer_timeout() -> void:
 		set_timer_text(remaining_exam_time)
 	elif not completing_level:
 		completing_level = true
-		level_complete.emit(grade, level_number)
+		level_complete.emit(grade, level_number, get_score())
 		classroom.enter_win_state()
 		display_win_screen()
+		
+func get_score():
+	return 3 - false_accusations - cheats_succeeded
 		
 func _on_complete_level():
 	if not completing_level:
 		completing_level = true
-		level_complete.emit(grade, level_number)
+		level_complete.emit(grade, level_number, get_score())
 		classroom.enter_win_state()
 		display_win_screen()

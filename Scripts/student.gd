@@ -3,6 +3,7 @@ extends SoundPlayer
 
 const MIN_TALK_STATE_TIME := .05
 const MAX_TALK_STATE_TIME := .3
+const BOB_DISTANCE := 10
 
 @onready var left_pupil = $"FullHead/Head/Full Left Eye/LeftPupil"
 @onready var right_pupil = $"FullHead/Head/Full Right Eye/RightPupil"
@@ -72,6 +73,15 @@ func look_forward():
 func look_down():
 	left_pupil.position = left_look_down_pos
 	right_pupil.position = right_look_down_pos
+	
+func bob():
+	var head = $FullHead/Head
+	var start_position = head.position
+	var tween = create_tween()
+	tween.tween_property(head, "position", start_position + Vector2(0, BOB_DISTANCE), .05)
+	tween.tween_property(head, "position", start_position + Vector2(0, -BOB_DISTANCE/2), .03)
+	tween.tween_property(head, "position", start_position + Vector2(0, BOB_DISTANCE/4), .02)
+	tween.tween_property(head, "position", start_position, .01)
 	
 func talk(duration_seconds):
 	talk_timer.start(duration_seconds)

@@ -605,6 +605,7 @@ func _on_student_accused(index):
 		return
 	
 	var student = get_student_by_index(index)
+	student.bob()
 	if active_cheaters.has(index):
 		cheat_stopped.emit()
 		print("Stopped student ", index, " from cheating")

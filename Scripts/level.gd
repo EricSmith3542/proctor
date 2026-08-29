@@ -31,6 +31,7 @@ func _ready() -> void:
 
 func connect_exam_end_signals():
 	exam_end_ui_panel.connect_continue_pressed_signal(_on_button_pressed)
+	classroom.completed.connect(_on_complete_level)
 
 func find_and_connect_unlock_tracker():
 	var nodes = get_tree().get_nodes_in_group("UnlockTracker")
@@ -97,6 +98,13 @@ func _on_exam_second_timer_timeout() -> void:
 	if remaining_exam_time >= 0:
 		set_timer_text(remaining_exam_time)
 	elif not completing_level:
+		completing_level = true
+		level_complete.emit(grade, level_number)
+		classroom.enter_win_state()
+		display_win_screen()
+		
+func _on_complete_level():
+	if not completing_level:
 		completing_level = true
 		level_complete.emit(grade, level_number)
 		classroom.enter_win_state()

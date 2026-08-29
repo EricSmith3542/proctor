@@ -6,10 +6,11 @@
 grade = "e"
 level_number = 2
 exam_time_seconds = 30
-number_of_students = 14
-cols_of_desks = 5
-fixed_cheat_time_seconds = 7
-action_wave_frequency = 4
-action_wave_jitter = 1
-cheat_frequency = 0.5
-max_actions_per_wave = 3
+
+[node name="Classroom" parent="." index="0" unique_id=1353106248]
+number_of_students = 12
+cols_of_desks = 4
+action_slots_per_cheat = 10
+strategies = Array[int]([1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+min_cheat_separation_slots = 4
+min_non_cheat_separation_slots = 2

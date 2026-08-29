@@ -8,4 +8,7 @@ level_number = 0
 exam_time_seconds = 30
 
 [node name="Classroom" parent="." index="0" unique_id=1353106248]
-strategies = Array[int]([3])
+action_slots_per_cheat = 10
+strategies = Array[int]([3, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+min_cheat_separation_slots = 4
+min_non_cheat_separation_slots = 2

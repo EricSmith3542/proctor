@@ -6,13 +6,14 @@
 grade = "h"
 level_number = 1
 exam_time_seconds = 60
-number_of_students = 20
+
+[node name="Classroom" parent="." index="0" unique_id=1353106248]
+number_of_students = 24
 rows_of_desks = 4
-cols_of_desks = 6
-fixed_cheat_time_seconds = 7
-action_wave_frequency = 4
-action_wave_jitter = 2
-cheat_frequency = 0.7
-max_actions_per_wave = 5
-min_actions_per_wave = 2
+cols_of_desks = 7
 allowed_actions = Array[int]([0, 1, 2, 3, 4, 5])
+action_slots_per_cheat = 9
+max_paired_action_slot_spread = 2
+strategies = Array[int]([3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0])
+min_cheat_separation_slots = 3
+min_non_cheat_separation_slots = 1

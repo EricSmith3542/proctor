@@ -6,6 +6,7 @@ const STUDENT_WIDTH = 128
 const STUDENT_HEIGHT = 200
 const SAFE_ACTIONS = [0, 1]
 
+signal completed
 signal level_failed
 signal cheat_stopped
 signal successful_cheat_update(cheat_count)
@@ -13,6 +14,7 @@ signal failed_accusation_update(accusation_count)
 
 @onready var student_container = $StudentContainer
 @onready var wave_timer = $WaveTimer
+@onready var action_slot_timer = $ActionSlotTimer
 
 @export var number_of_students = 8
 @export_range(1, 100, 1) var rows_of_desks : int = 3
@@ -44,6 +46,7 @@ var active_cheaters = {}
 var successful_cheats = 0
 var false_accusations = 0
 var exam_in_progress = false
+var current_action_slot = 0
 
 var action_frequency := 1
 var action_wave_jitter_seconds = 3
@@ -54,6 +57,7 @@ var max_random_wait_seconds = 15
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super()
+	action_slot_timer.timeout.connect(process_next_action_slot)
 	
 class ActionPlan:
 	var action: Actions = Actions.LOOK_DOWN
@@ -68,10 +72,42 @@ class ActionPlan:
 		is_cheat = is_cheat_
 		
 	func _to_string() -> String:
-		return "Student " + str(student_index) + " takes " + str(Actions.find_key(action)) + " for " + str(action_slot_duration) + " slots"
+		return "Student " + str(student_index) + " takes " + str(Actions.find_key(action)) + " for " + str(action_slot_duration) + " slots. CHEAT:" + str(is_cheat)
+
+func start_exam():
+	# TODO: post mvp this is where you would trigger picking up pencils
+	# All students look down at start of exam
+	for student in student_container.get_children():
+		if student.is_present:
+			student.stop_performing_actions()
+			student.look_down()
+	exam_in_progress = true
+	
+	process_next_action_slot()
+	
+func process_next_action_slot():
+	print("Slot ", current_action_slot, " starting...")
+	if current_action_slot >= action_slots.size():
+		completed.emit()
+		return
+		
+	var slot = action_slots[current_action_slot]
+	for plan in slot:
+		execute_action_plan(plan)
+	current_action_slot += 1
+	action_slot_timer.start(action_slot_time_seconds)
 
 func execute_action_plan(plan:ActionPlan):
 	var student = get_student_by_index(plan.student_index)
+	if plan.is_cheat:
+		var temp_timer = Timer.new()
+		temp_timer.wait_time = plan.action_slot_duration * action_slot_time_seconds
+		temp_timer.one_shot = true
+		temp_timer.timeout.connect(handle_if_cheating.bind(student))
+		add_child(temp_timer)
+		temp_timer.start()
+		active_cheaters[plan.student_index] = {"action": plan.action, "timer": temp_timer}
+		print("Student ", plan.student_index, " starting cheat ", Actions.find_key(plan.action), " taking ", plan.action_slot_duration * action_slot_time_seconds)
 	student.perform_action(plan.action, -1, plan.action_slot_duration * action_slot_time_seconds)
 	
 func prepare_classroom(exam_time_seconds):
@@ -417,16 +453,6 @@ func start_action_random_wait(student, action, fixed_cheat_time = true):
 			return
 	student.perform_action(action, get_random_wait_seconds(), get_random_talk_seconds())
 	
-func start_exam():
-	# TODO: post mvp this is where you would trigger picking up pencils
-	# All students look down at start of exam
-	for student in student_container.get_children():
-		if student.is_present:
-			student.stop_performing_actions()
-			student.look_down()
-	exam_in_progress = true
-	start_action_waves()
-	
 func start_action_waves():
 	wave_timer.start(get_jittered_wave_timer())
 	
@@ -486,13 +512,14 @@ func increment_false_accusations():
 	check_for_fail()
 
 func handle_if_cheating(student):
-	if active_cheaters.has(student.index):
-		print("Student ", student.index, " cheated with action ", active_cheaters[student.index])
-		play_sound(SoundManager.LAUGH, student.get_head_center())
-		student.look_down()
-		increment_cheat_count()
-		active_cheaters.erase(student.index)
-		return true
+	if exam_in_progress:
+		if active_cheaters.has(student.index):
+			print("Student ", student.index, " cheated with action ", active_cheaters[student.index]["action"])
+			play_sound(SoundManager.LAUGH, student.get_head_center())
+			student.look_down()
+			increment_cheat_count()
+			active_cheaters.erase(student.index)
+			return true
 	return false
 		
 func get_student_by_index(index) -> Student:
@@ -553,6 +580,7 @@ func enter_fail_state():
 	stop_all_student_actions()
 	play_sound(SoundManager.FAIL)
 	level_failed.emit()
+	action_slot_timer.stop()
 	
 func enter_win_state():
 	exam_in_progress = false
@@ -560,6 +588,7 @@ func enter_win_state():
 	active_cheaters = {}
 	stop_all_student_actions()
 	wave_timer.stop()
+	action_slot_timer.stop()
 
 func stop_all_student_actions():
 	for student in student_container.get_children():
@@ -579,6 +608,7 @@ func _on_student_accused(index):
 	if active_cheaters.has(index):
 		cheat_stopped.emit()
 		print("Stopped student ", index, " from cheating")
+		active_cheaters[index]["timer"].stop()
 		active_cheaters.erase(index)
 		play_sound(SoundManager.AWW, student.get_head_center())
 		student.stop_talking()

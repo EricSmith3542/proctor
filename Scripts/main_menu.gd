@@ -65,12 +65,20 @@ func _on_button_pressed(level_key) -> void:
 	else:
 		get_tree().change_scene_to_file("res://Scenes/Levels/level_"+str(level_key)+".tscn")
 
-func _on_play_button_pressed() -> void:
+func hide_title_elements():
 	$CanvasLayer/TitleUI.hide()
+	$Title.hide()
+	
+func show_title_elements():
+	$CanvasLayer/TitleUI.show()
+	$Title.show()
+
+func _on_play_button_pressed() -> void:
+	hide_title_elements()
 	prepare_and_show_exam_select()
 
 func _on_settings_button_pressed() -> void:
-	$CanvasLayer/TitleUI.hide()
+	hide_title_elements()
 	prepare_and_show_settings()
 	
 func prepare_and_show_settings():
@@ -99,11 +107,11 @@ func set_music_volume_text(value):
 
 func _on_settings_back_button_pressed() -> void:
 	$CanvasLayer/SettingsUI.hide()
-	$CanvasLayer/TitleUI.show()
+	show_title_elements()
 
 func _on_exam_select_back_button_pressed() -> void:
 	$CanvasLayer/ExamSelectUI.hide()
-	$CanvasLayer/TitleUI.show()
+	show_title_elements()
 
 func _on_volume_test_pressed() -> void:
 	SoundManager.play_all_sounds_sequential()

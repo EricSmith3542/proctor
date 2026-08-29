@@ -1,6 +1,7 @@
 extends Node2D
 
 const GRADE_LEVEL_LETTERS = ["k", "e", "m", "h"]
+const RULES_LEVELS = ["k0", "m0"]
 const ONE_STAR = preload("res://Images/1stars.png")
 const TWO_STAR = preload("res://Images/2stars.png")
 const THREE_STAR = preload("res://Images/3stars.png")
@@ -50,7 +51,10 @@ func previous_grade_letter(letter):
 	return GRADE_LEVEL_LETTERS[GRADE_LEVEL_LETTERS.find(letter)-1]
 
 func _on_button_pressed(level_key) -> void:
-	get_tree().change_scene_to_file("res://Scenes/Levels/level_"+str(level_key)+".tscn")
+	if level_key in RULES_LEVELS:
+		get_tree().change_scene_to_file("res://Scenes/Levels/rules_"+str(level_key)+".tscn")
+	else:
+		get_tree().change_scene_to_file("res://Scenes/Levels/level_"+str(level_key)+".tscn")
 
 func _on_play_button_pressed() -> void:
 	$CanvasLayer/TitleUI.hide()

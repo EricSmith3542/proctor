@@ -33,8 +33,8 @@ func pick_parts():
 	pass
 
 func perform_action_after_wait(action_number, new_action_request_time, duration, wait):
-	await get_tree().create_timer(wait).timeout
-	perform_action(action_number, new_action_request_time, duration)
+	$ActionWait.timeout.connect(perform_action.bind(action_number, new_action_request_time, duration))
+	$ActionWait.start(wait)
 
 func perform_action(action_number, new_action_request_time, duration):
 	match(action_number):
@@ -57,6 +57,7 @@ func perform_action(action_number, new_action_request_time, duration):
 func stop_performing_actions():
 	stop_talking()
 	$Timer.stop()
+	$ActionWait.stop()
 		
 func look_left():
 	left_pupil.position = left_look_down_pos + look_left_pos
@@ -149,3 +150,9 @@ func _on_area_2d_mouse_exited() -> void:
 func _on_area_2d_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
 	if event is InputEventMouseButton and event.is_pressed() and event.button_index == 1:
 		accused_of_cheating.emit()
+		
+func show_cheater_text():
+	$CheatIndicator.show()
+
+func hide_cheater_text():
+	$CheatIndicator.hide()

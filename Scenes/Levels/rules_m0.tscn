@@ -1,0 +1,133 @@
+[gd_scene format=3 uid="uid://jch2sbqcvxxt"]
+
+[ext_resource type="Script" uid="uid://bytwpjalyp4pu" path="res://Scripts/rules_m_0.gd" id="1_xeau5"]
+[ext_resource type="PackedScene" uid="uid://ddoslsch85hp4" path="res://Scenes/student.tscn" id="2_pnclg"]
+[ext_resource type="Texture2D" uid="uid://cktrd6e8vbvjx" path="res://Images/classroom2.png" id="3_btmek"]
+[ext_resource type="LabelSettings" uid="uid://bu720xe7w6nlc" path="res://Label Settings/StatsLabel.tres" id="4_ld3xv"]
+[ext_resource type="Texture2D" uid="uid://bnbq0iduuyehf" path="res://Images/arrow.png" id="5_y4vr7"]
+[ext_resource type="Texture2D" uid="uid://dfmsfmrgr60lt" path="res://Images/arrow_light.png" id="6_ww8dk"]
+
+[node name="RulesM0" type="Node2D" unique_id=1749638959]
+script = ExtResource("1_xeau5")
+
+[node name="Student0" parent="." unique_id=259037794 instance=ExtResource("2_pnclg")]
+position = Vector2(640, 240)
+
+[node name="Student5" parent="." unique_id=574321364 instance=ExtResource("2_pnclg")]
+position = Vector2(1152, 440)
+
+[node name="NonTalking Students" type="Node2D" parent="." unique_id=1147948925]
+
+[node name="Student1" parent="NonTalking Students" unique_id=99277078 instance=ExtResource("2_pnclg")]
+position = Vector2(896, 240)
+
+[node name="Student2" parent="NonTalking Students" unique_id=1356966607 instance=ExtResource("2_pnclg")]
+position = Vector2(1152, 240)
+
+[node name="Student3" parent="NonTalking Students" unique_id=246530014 instance=ExtResource("2_pnclg")]
+position = Vector2(640, 440)
+
+[node name="Student4" parent="NonTalking Students" unique_id=1369593544 instance=ExtResource("2_pnclg")]
+position = Vector2(896, 440)
+
+[node name="Student6" parent="NonTalking Students" unique_id=1562021566 instance=ExtResource("2_pnclg")]
+position = Vector2(640, 640)
+
+[node name="Student7" parent="NonTalking Students" unique_id=133597422 instance=ExtResource("2_pnclg")]
+position = Vector2(896, 640)
+
+[node name="Student8" parent="NonTalking Students" unique_id=1823475748 instance=ExtResource("2_pnclg")]
+position = Vector2(1152, 640)
+
+[node name="Background" type="Sprite2D" parent="." unique_id=1729958388]
+z_index = -4
+texture = ExtResource("3_btmek")
+centered = false
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=928125560]
+
+[node name="Control" type="Control" parent="CanvasLayer" unique_id=338593554]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="CanvasLayer/Control" unique_id=1517675599]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 601.0
+grow_vertical = 2
+text = "Middle school and beyond, students will start to talk and cough during exams.
+
+Coughing is allowed, but talking is only okay if there are no students adjacent to the talking student."
+label_settings = ExtResource("4_ld3xv")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="Label2" type="Label" parent="CanvasLayer/Control" unique_id=1289630077]
+layout_direction = 2
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -602.0
+offset_top = -442.5
+offset_right = -0.99975586
+offset_bottom = 442.5
+grow_horizontal = 0
+grow_vertical = 2
+text = "Students will also be able to pull of cheats slightly faster than before!
+
+Good luck!"
+label_settings = ExtResource("4_ld3xv")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer" unique_id=1647873072]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -53.0
+offset_right = 82.0
+grow_vertical = 0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="TextureButton" type="TextureButton" parent="CanvasLayer/MarginContainer" unique_id=996231585]
+layout_mode = 2
+texture_normal = ExtResource("5_y4vr7")
+texture_pressed = ExtResource("5_y4vr7")
+texture_hover = ExtResource("6_ww8dk")
+
+[node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer" unique_id=434896640]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -39.5
+offset_top = -31.0
+offset_right = 39.5
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_constants/margin_bottom = 10
+
+[node name="Button" type="Button" parent="CanvasLayer/MarginContainer2" unique_id=355408452]
+layout_mode = 2
+theme_override_font_sizes/font_size = 32
+text = "Continue"
+
+[node name="TalkTimer" type="Timer" parent="." unique_id=1763350760]
+
+[node name="CoughTimer" type="Timer" parent="." unique_id=2056086089]
+
+[connection signal="pressed" from="CanvasLayer/MarginContainer/TextureButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer2/Button" to="." method="_on_continue_button_pressed"]
+[connection signal="timeout" from="TalkTimer" to="." method="_on_talk_timer_timeout"]
+[connection signal="timeout" from="CoughTimer" to="." method="_on_cough_timer_timeout"]

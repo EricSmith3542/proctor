@@ -35,10 +35,10 @@ func tick_down():
 	tick_tween.tween_callback(finish_and_start_new_tick)
 	
 func finish_and_start_new_tick():
-	play_sound(SoundManager.CLICK)
-	await get_tree().create_timer(.8).timeout
 	ticks_remaining -= 1
 	if ticks_remaining > 0:
+		play_sound(SoundManager.CLICK)
+		await get_tree().create_timer(.8).timeout
 		tick_down()
 	
 func ring():

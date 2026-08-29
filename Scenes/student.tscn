@@ -25,9 +25,16 @@
 [ext_resource type="Texture2D" uid="uid://duaklftptbtwn" path="res://Images/Noses/nose.png" id="21_amyj0"]
 [ext_resource type="Texture2D" uid="uid://c60k0ocn6a61y" path="res://Images/Hats/hair.png" id="22_amyj0"]
 [ext_resource type="Texture2D" uid="uid://hr0a2vu30375" path="res://Images/Hats/propeller.png" id="23_mhy88"]
+[ext_resource type="Texture2D" uid="uid://dfmsfmrgr60lt" path="res://Images/arrow_light.png" id="26_mhy88"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_v7y4v"]
 radius = 65.23228
+
+[sub_resource type="LabelSettings" id="LabelSettings_amyj0"]
+font_size = 32
+font_color = Color(1, 0, 0, 1)
+outline_size = 5
+outline_color = Color(0, 0, 0, 1)
 
 [node name="Student" type="Node2D" unique_id=259037794]
 script = ExtResource("1_5fjsm")
@@ -120,6 +127,43 @@ one_shot = true
 
 [node name="CoughTimer" type="Timer" parent="." unique_id=816150598]
 wait_time = 0.2
+
+[node name="CheatIndicator" type="Control" parent="." unique_id=1127299034]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CheaterLabel" type="Label" parent="CheatIndicator" unique_id=1165489967]
+layout_mode = 0
+offset_top = -58.0
+offset_right = 123.0
+offset_bottom = -13.0
+text = "Cheat"
+label_settings = SubResource("LabelSettings_amyj0")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Control" type="Control" parent="CheatIndicator" unique_id=264777722]
+anchors_preset = 0
+offset_left = 64.0
+offset_top = -9.0
+offset_right = 104.0
+offset_bottom = 31.0
+scale = Vector2(0.29524833, 0.29524833)
+
+[node name="TextureRect" type="TextureRect" parent="CheatIndicator/Control" unique_id=943213307]
+layout_mode = 0
+offset_left = -23.0
+offset_top = 42.0
+offset_right = 55.0
+offset_bottom = 88.0
+rotation = -1.5707964
+texture = ExtResource("26_mhy88")
+
+[node name="ActionWait" type="Timer" parent="." unique_id=1029747279]
+one_shot = true
 
 [connection signal="input_event" from="FullHead/Area2D" to="." method="_on_area_2d_input_event"]
 [connection signal="mouse_entered" from="FullHead/Area2D" to="." method="_on_area_2d_mouse_entered"]

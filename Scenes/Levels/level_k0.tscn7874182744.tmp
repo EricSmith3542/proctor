@@ -9,12 +9,6 @@ exam_time_seconds = 15
 [node name="Classroom" parent="." index="0" unique_id=1353106248]
 number_of_students = 3
 rows_of_desks = 1
-cols_of_desks = 3
-fixed_cheat_time_seconds = 5.0
-allowed_actions = Array[int]([0, 1, 2, 3])
-action_slot_time_seconds = 0.5
 action_slots_per_cheat = 10
-max_paired_action_slot_spread = 0
 strategies = Array[int]([1, 1, 1, 0, 0, 0])
-min_cheat_separation_slots = 5
 min_non_cheat_separation_slots = 2

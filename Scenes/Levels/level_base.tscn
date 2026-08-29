@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bd738p0afre1s" path="res://Scenes/UI/exam_end_ui_panel.tscn" id="4_m7m8v"]
 [ext_resource type="Texture2D" uid="uid://bnbq0iduuyehf" path="res://Images/arrow.png" id="4_t8ai0"]
 [ext_resource type="Texture2D" uid="uid://dfmsfmrgr60lt" path="res://Images/arrow_light.png" id="5_ej2hx"]
+[ext_resource type="PackedScene" uid="uid://bebtd5yfepk64" path="res://Scenes/timer.tscn" id="7_ej2hx"]
 
 [sub_resource type="LabelSettings" id="LabelSettings_mxxjo"]
 font_size = 64
@@ -19,11 +20,27 @@ level_number = -1
 exam_time_seconds = 10
 
 [node name="Classroom" parent="." unique_id=1353106248 instance=ExtResource("2_m7m8v")]
+number_of_students = null
+rows_of_desks = null
+cols_of_desks = null
+fixed_cheat_time_seconds = null
+action_wave_frequency = null
+action_wave_jitter = null
+cheat_frequency = null
+max_actions_per_wave = null
+min_actions_per_wave = null
+allowed_actions = null
+action_slot_time_seconds = null
+action_slots_per_cheat = null
+max_paired_action_slot_spread = null
+strategies = null
+min_cheat_separation_slots = null
+min_non_cheat_separation_slots = null
 
 [node name="ExamSecondTimer" type="Timer" parent="." unique_id=286506423]
 
 [node name="Background" type="Sprite2D" parent="." unique_id=453674882]
-z_index = -1
+z_index = -3
 texture = ExtResource("3_m7m8v")
 centered = false
 
@@ -46,6 +63,7 @@ texture_pressed = ExtResource("4_t8ai0")
 texture_hover = ExtResource("5_ej2hx")
 
 [node name="MarginContainer2" type="MarginContainer" parent="CanvasLayer" unique_id=815976447]
+visible = false
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
@@ -64,7 +82,6 @@ theme_override_font_sizes/font_size = 32
 text = "Start Exam"
 
 [node name="ExamUI" type="Control" parent="CanvasLayer" unique_id=663032785]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -72,18 +89,18 @@ offset_bottom = 40.0
 
 [node name="CheatsText" type="Label" parent="CanvasLayer/ExamUI" unique_id=1655652041]
 layout_mode = 0
-offset_left = 1656.0
+offset_left = 1672.0
 offset_top = 1040.0
-offset_right = 1802.0
+offset_right = 1818.0
 offset_bottom = 1063.0
 scale = Vector2(1.4110129, 1.5892743)
 text = "Successful Cheats: "
 
 [node name="CheatsCountText" type="Label" parent="CanvasLayer/ExamUI" unique_id=250890592]
 layout_mode = 0
-offset_left = 1864.0001
+offset_left = 1880.0001
 offset_top = 1040.0001
-offset_right = 2010.0001
+offset_right = 2026.0001
 offset_bottom = 1089.0001
 scale = Vector2(1.4110129, 1.5892743)
 text = "0
@@ -91,18 +108,18 @@ text = "0
 
 [node name="FalseAccusationText" type="Label" parent="CanvasLayer/ExamUI" unique_id=2082580466]
 layout_mode = 0
-offset_left = 1232.0
+offset_left = 1432.0
 offset_top = 1040.0
-offset_right = 1378.0
+offset_right = 1578.0
 offset_bottom = 1063.0
 scale = Vector2(1.4110129, 1.5892743)
 text = "False Accusations: "
 
 [node name="FalseAccusationCountText" type="Label" parent="CanvasLayer/ExamUI" unique_id=2134430358]
 layout_mode = 0
-offset_left = 1440.0001
+offset_left = 1640.0001
 offset_top = 1040.0001
-offset_right = 1586.0001
+offset_right = 1786.0001
 offset_bottom = 1089.0001
 scale = Vector2(1.4110129, 1.5892743)
 text = "0
@@ -110,24 +127,25 @@ text = "0
 
 [node name="TimeText" type="Label" parent="CanvasLayer/ExamUI" unique_id=1421856299]
 layout_mode = 0
-offset_left = 904.0
+offset_left = 856.0
 offset_top = 1040.0
-offset_right = 1050.0
+offset_right = 1002.0
 offset_bottom = 1063.0
 scale = Vector2(1.4110129, 1.5892743)
 text = "Time Remaining:"
 
 [node name="TimeLeftText" type="Label" parent="CanvasLayer/ExamUI" unique_id=680737268]
 layout_mode = 0
-offset_left = 1096.0001
+offset_left = 1048.0001
 offset_top = 1040.0
-offset_right = 1242.0001
+offset_right = 1194.0001
 offset_bottom = 1089.0
 scale = Vector2(1.4110129, 1.5892743)
 text = "0
 "
 
 [node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer" unique_id=1318145864]
+visible = false
 anchors_preset = 5
 anchor_left = 0.5
 anchor_right = 0.5
@@ -146,6 +164,10 @@ vertical_alignment = 1
 
 [node name="ExamEndUIPanel" parent="CanvasLayer" unique_id=444349107 instance=ExtResource("4_m7m8v")]
 visible = false
+
+[node name="DeskTimer" parent="." unique_id=2127820069 instance=ExtResource("7_ej2hx")]
+position = Vector2(960, 968)
+scale = Vector2(0.6184875, 0.6184875)
 
 [connection signal="cheat_stopped" from="Classroom" to="." method="_on_cheat_stopped"]
 [connection signal="failed_accusation_update" from="Classroom" to="." method="_on_failed_accusation_update"]

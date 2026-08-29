@@ -13,18 +13,12 @@ signal successful_cheat_update(cheat_count)
 signal failed_accusation_update(accusation_count)
 
 @onready var student_container = $StudentContainer
-@onready var wave_timer = $WaveTimer
 @onready var action_slot_timer = $ActionSlotTimer
 
 @export var number_of_students = 8
 @export_range(1, 100, 1) var rows_of_desks : int = 3
 @export_range(1, 100, 1) var cols_of_desks : int = 3
-@export var fixed_cheat_time_seconds = 5
-@export var action_wave_frequency := 1
-@export var action_wave_jitter := 3
-@export var cheat_frequency := .1
-@export_range(1, 100, 1, "or_greater") var max_actions_per_wave := 1
-@export_range(1, 100, 1, "or_greater") var min_actions_per_wave := 1
+@export var fixed_cheat_time_seconds := 5.0
 
 enum Actions {LOOK_DOWN, LOOK_FORWARD, LOOK_LEFT, LOOK_RIGHT, TALK, COUGH}
 @export var allowed_actions:Array[Actions] = [Actions.LOOK_DOWN, Actions.LOOK_FORWARD, Actions.LOOK_LEFT, Actions.LOOK_RIGHT]
@@ -440,60 +434,12 @@ func prepare_student(student, index):
 	await get_tree().create_timer(randf_range(.2, 3.0)).timeout
 	start_random_action_random_wait(student)
 			
-func start_random_action_random_wait(student, fixed_cheat_time = true):
+func start_random_action_random_wait(student):
 	var random_action = range(Actions.size()).pick_random()
-	start_action_random_wait(student, random_action, exam_in_progress and fixed_cheat_time)
+	start_action_random_wait(student, random_action)
 
-func start_action_random_wait(student, action, fixed_cheat_time = true):
-	if is_student_cheating(action, student):
-		print("SHOULD NEVER GET HERE")
-		active_cheaters[student.index] = action
-		if fixed_cheat_time:
-			student.perform_action(action, fixed_cheat_time_seconds, fixed_cheat_time_seconds)
-			return
+func start_action_random_wait(student, action):
 	student.perform_action(action, get_random_wait_seconds(), get_random_talk_seconds())
-	
-func start_action_waves():
-	wave_timer.start(get_jittered_wave_timer())
-	
-func get_jittered_wave_timer():
-	return randf_range(max(0, action_frequency - 3), action_frequency + 3)
-	
-func _on_wave_timer_timeout() -> void:
-	start_actions()
-	wave_timer.start(get_jittered_wave_timer())
-	
-func start_actions():
-	var all_students = student_container.get_children()
-	var all_present_students = all_students.filter(func(student): return student.is_present)
-	var all_student_indicies = []
-	for student in all_present_students:
-		all_student_indicies.append(student.index)
-	var students_ready_for_action = all_student_indicies.filter(func(index): return index not in active_cheaters.keys())
-	var actions_to_take = min(randi_range(min_actions_per_wave, max_actions_per_wave), students_ready_for_action.size())
-	
-	print("WAVE STARTING. Taking ", actions_to_take, " actions. Ready students: ", students_ready_for_action)
-	for i in range(actions_to_take):
-		var student_index = students_ready_for_action.pick_random()
-		students_ready_for_action.remove_at(students_ready_for_action.find(student_index))
-		var student = all_students[student_index]
-		var picked_action
-		var should_cheat = randf() <= cheat_frequency
-		var wait_before_action = randf_range(0,2)
-		if should_cheat:
-			var cheat_actions = get_cheating_actions_for_student(student)
-			if cheat_actions.size() > 0:
-				picked_action = cheat_actions.pick_random()
-				active_cheaters[student.index] = picked_action
-				student.perform_action_after_wait(picked_action, -1, fixed_cheat_time_seconds, wait_before_action)
-				var temp_timer = get_tree().create_timer(fixed_cheat_time_seconds)
-				temp_timer.timeout.connect(handle_if_cheating.bind(student))
-				print("Picked cheat ", picked_action, " from ", cheat_actions)
-		else:
-			var safe_actions = get_safe_actions_for_student(student)
-			picked_action = safe_actions.pick_random()
-			student.perform_action_after_wait(picked_action, -1, get_random_talk_seconds(), wait_before_action)
-		print("Student ", student_index, " taking action ", Actions.find_key(picked_action), " in ", wait_before_action,  "seconds. CHEATING = ", should_cheat)
 			
 func get_cheating_actions_for_student(student):
 	return allowed_actions.filter(is_student_cheating.bind(student))
@@ -526,7 +472,7 @@ func get_student_by_index(index) -> Student:
 	return student_container.get_child(index)
 	
 func get_random_wait_seconds() -> float:
-	return randf_range(1,max_random_wait_seconds)
+	return randf_range(2,max_random_wait_seconds)
 	
 func get_random_talk_seconds() -> float:
 	return randf_range(2,fixed_cheat_time_seconds)
@@ -587,7 +533,6 @@ func enter_win_state():
 	play_sound(SoundManager.SUCCESS)
 	active_cheaters = {}
 	stop_all_student_actions()
-	wave_timer.stop()
 	action_slot_timer.stop()
 
 func stop_all_student_actions():

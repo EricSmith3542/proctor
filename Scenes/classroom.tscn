@@ -16,9 +16,4 @@ shape = SubResource("RectangleShape2D_fh6w7")
 
 [node name="StudentContainer" type="Node2D" parent="." unique_id=372732600]
 
-[node name="WaveTimer" type="Timer" parent="." unique_id=1587520724]
-one_shot = true
-
 [node name="ActionSlotTimer" type="Timer" parent="." unique_id=1189452838]
-
-[connection signal="timeout" from="WaveTimer" to="." method="_on_wave_timer_timeout"]

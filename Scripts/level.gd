@@ -26,8 +26,12 @@ signal level_complete(grade, level)
 
 func _ready() -> void:
 	find_and_connect_unlock_tracker()
+	$DeskTimer.timer_started.connect(_on_start_button_pressed)
+	$DeskTimer.time_seconds = exam_time_seconds
 	connect_exam_end_signals()
 	classroom.prepare_classroom(exam_time_seconds)
+	set_timer_text(exam_time_seconds)
+	
 
 func connect_exam_end_signals():
 	exam_end_ui_panel.connect_continue_pressed_signal(_on_button_pressed)
@@ -80,7 +84,7 @@ func _on_start_button_pressed():
 
 func countdown_to_exam_start():
 	countdown_text.visible = true
-	var countdown_array = range(3)
+	var countdown_array = range(1)
 	countdown_array.reverse()
 	for i in countdown_array:
 		countdown_text.text = str(i+1)

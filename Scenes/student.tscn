@@ -99,6 +99,7 @@ possible_sprites = Array[Texture2D]([ExtResource("22_amyj0"), ExtResource("23_mh
 is_optional = true
 
 [node name="FullDesk" type="Node2D" parent="." unique_id=1616577547]
+z_index = -2
 
 [node name="Desk" type="Sprite2D" parent="FullDesk" unique_id=752723861]
 position = Vector2(64, 164)

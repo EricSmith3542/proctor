@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://bebtd5yfepk64"]
+
+[ext_resource type="Texture2D" uid="uid://ct0wfx7p8r7ei" path="res://Images/TimerBody.png" id="1_4hjkw"]
+[ext_resource type="Script" uid="uid://cp1pu37y21gwc" path="res://Scripts/timer.gd" id="1_6wwcs"]
+[ext_resource type="Texture2D" uid="uid://3et7xcybpuw6" path="res://Images/TimerButton.png" id="2_6wwcs"]
+[ext_resource type="Texture2D" uid="uid://buo4wf3jsdhu4" path="res://Images/TimerHand.png" id="3_sw2ev"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_sw2ev"]
+radius = 112.04017
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wlgqq"]
+size = Vector2(69, 44)
+
+[node name="DeskTimer" type="Node2D" unique_id=2127820069]
+script = ExtResource("1_6wwcs")
+
+[node name="Body" type="Sprite2D" parent="." unique_id=1856728215]
+texture = ExtResource("1_4hjkw")
+
+[node name="Button" type="Sprite2D" parent="Body" unique_id=1739035103]
+z_index = -1
+texture = ExtResource("2_6wwcs")
+
+[node name="HandPivot" type="Node2D" parent="Body" unique_id=1789164119]
+position = Vector2(0, 21)
+rotation = 6.2831855
+
+[node name="Hand" type="Sprite2D" parent="Body/HandPivot" unique_id=346485387]
+position = Vector2(0, -21)
+texture = ExtResource("3_sw2ev")
+
+[node name="Area2D" type="Area2D" parent="." unique_id=1554567838]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D" unique_id=328736754]
+position = Vector2(0, 21)
+shape = SubResource("CircleShape2D_sw2ev")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Area2D" unique_id=1080902812]
+position = Vector2(0.5, -108)
+shape = SubResource("RectangleShape2D_wlgqq")
+
+[connection signal="input_event" from="Area2D" to="." method="_on_area_2d_input_event"]

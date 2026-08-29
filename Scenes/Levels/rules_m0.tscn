@@ -16,28 +16,28 @@ position = Vector2(640, 240)
 [node name="Student5" parent="." unique_id=574321364 instance=ExtResource("2_pnclg")]
 position = Vector2(1152, 440)
 
-[node name="NonTalking Students" type="Node2D" parent="." unique_id=1147948925]
+[node name="Student6" parent="." unique_id=1562021566 instance=ExtResource("2_pnclg")]
+position = Vector2(640, 640)
 
-[node name="Student1" parent="NonTalking Students" unique_id=99277078 instance=ExtResource("2_pnclg")]
+[node name="Student1" parent="." unique_id=99277078 instance=ExtResource("2_pnclg")]
 position = Vector2(896, 240)
+
+[node name="Student3" parent="." unique_id=246530014 instance=ExtResource("2_pnclg")]
+position = Vector2(640, 440)
+
+[node name="Student4" parent="." unique_id=1369593544 instance=ExtResource("2_pnclg")]
+position = Vector2(896, 440)
+
+[node name="Student8" parent="." unique_id=1823475748 instance=ExtResource("2_pnclg")]
+position = Vector2(1152, 640)
+
+[node name="NonTalking Students" type="Node2D" parent="." unique_id=1147948925]
 
 [node name="Student2" parent="NonTalking Students" unique_id=1356966607 instance=ExtResource("2_pnclg")]
 position = Vector2(1152, 240)
 
-[node name="Student3" parent="NonTalking Students" unique_id=246530014 instance=ExtResource("2_pnclg")]
-position = Vector2(640, 440)
-
-[node name="Student4" parent="NonTalking Students" unique_id=1369593544 instance=ExtResource("2_pnclg")]
-position = Vector2(896, 440)
-
-[node name="Student6" parent="NonTalking Students" unique_id=1562021566 instance=ExtResource("2_pnclg")]
-position = Vector2(640, 640)
-
 [node name="Student7" parent="NonTalking Students" unique_id=133597422 instance=ExtResource("2_pnclg")]
 position = Vector2(896, 640)
-
-[node name="Student8" parent="NonTalking Students" unique_id=1823475748 instance=ExtResource("2_pnclg")]
-position = Vector2(1152, 640)
 
 [node name="Background" type="Sprite2D" parent="." unique_id=1729958388]
 z_index = -4

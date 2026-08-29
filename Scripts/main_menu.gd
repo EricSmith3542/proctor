@@ -9,10 +9,11 @@ const THREE_STAR = preload("res://Images/3stars.png")
 @onready var grade_levels := $"CanvasLayer/ExamSelectUI/FlowContainer/Grade Levels".get_children()
 @onready var volume_number_text := $"CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer/Volume Number"
 @onready var talking_volume_number_text := $"CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer2/Volume Number"
+@onready var music_volume_number_text := $"CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer3/Volume Number"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	pass
+	SoundManager.start_music()
 				
 func check_unlocks():
 	for grade in range(GRADE_LEVEL_LETTERS.size()):
@@ -39,6 +40,14 @@ func check_volume_settings():
 	var volume = int(db_to_linear(AudioServer.get_bus_volume_db(0)) * 100)
 	set_volume_text(volume)
 	$"CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer/Volume Slider".value = volume
+	
+	var talk_volume = int(db_to_linear(AudioServer.get_bus_volume_db(1)) * 100)
+	set_talking_volume_text(volume)
+	$"CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer2/Volume Slider".value = talk_volume
+	
+	var music_volume = int(db_to_linear(AudioServer.get_bus_volume_db(2)) * 100)
+	set_music_volume_text(volume)
+	$"CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer3/Volume Slider".value = music_volume
 
 func get_previous_level_score(grade, level):
 	if level == 0:
@@ -84,6 +93,9 @@ func set_volume_text(value):
 	
 func set_talking_volume_text(value):
 	talking_volume_number_text.text = str(int(value))
+	
+func set_music_volume_text(value):
+	music_volume_number_text.text = str(int(value))
 
 func _on_settings_back_button_pressed() -> void:
 	$CanvasLayer/SettingsUI.hide()
@@ -102,3 +114,7 @@ func _on_talking_volume_slider_value_changed(value: float) -> void:
 
 func _on_talking_volume_test_pressed() -> void:
 	SoundManager.play_all_talk_sounds()
+
+func _on__music_volume_slider_value_changed(value: float) -> void:
+	SoundManager.set_music_volume(value)
+	set_music_volume_text(value)

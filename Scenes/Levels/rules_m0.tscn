@@ -81,7 +81,7 @@ offset_right = -0.99975586
 offset_bottom = 442.5
 grow_horizontal = 0
 grow_vertical = 2
-text = "Students will also be able to pull of cheats slightly faster than before!
+text = "Students will also be able to pull off cheats slightly faster than before!
 
 Good luck!"
 label_settings = ExtResource("4_ld3xv")
@@ -120,6 +120,7 @@ theme_override_constants/margin_bottom = 10
 
 [node name="Button" type="Button" parent="CanvasLayer/MarginContainer2" unique_id=355408452]
 layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 0, 1)
 theme_override_font_sizes/font_size = 32
 text = "Continue"
 

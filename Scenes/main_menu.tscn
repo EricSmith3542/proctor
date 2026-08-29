@@ -369,6 +369,33 @@ ticks_position = 3
 layout_mode = 2
 text = "Test"
 
+[node name="MarginContainer4" type="MarginContainer" parent="CanvasLayer/SettingsUI/VFlowContainer" unique_id=500416265]
+layout_mode = 2
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="CanvasLayer/SettingsUI/VFlowContainer/MarginContainer4" unique_id=302245086]
+layout_mode = 2
+text = "Music Volume"
+label_settings = SubResource("LabelSettings_1ehe0")
+
+[node name="HFlowContainer3" type="HFlowContainer" parent="CanvasLayer/SettingsUI/VFlowContainer" unique_id=970772581]
+layout_mode = 2
+
+[node name="Volume Number" type="Label" parent="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer3" unique_id=1608867923]
+custom_minimum_size = Vector2(55, 45)
+layout_mode = 2
+text = "50"
+label_settings = SubResource("LabelSettings_ce3w2")
+
+[node name="Volume Slider" type="HSlider" parent="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer3" unique_id=815763405]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+value = 50.0
+tick_count = 100
+ticks_on_borders = true
+ticks_position = 3
+
 [node name="MarginContainer3" type="MarginContainer" parent="CanvasLayer/SettingsUI/VFlowContainer" unique_id=1530458830]
 layout_mode = 2
 theme_override_constants/margin_bottom = 5
@@ -417,6 +444,7 @@ centered = false
 [connection signal="pressed" from="CanvasLayer/TitleUI/VFlowContainer/Quit Button" to="." method="_on_quit_button_pressed"]
 [connection signal="value_changed" from="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer/Volume Slider" to="." method="_on_volume_slider_value_changed"]
 [connection signal="pressed" from="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer/MasterVolumeTest" to="." method="_on_volume_test_pressed"]
+[connection signal="value_changed" from="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer3/Volume Slider" to="." method="_on__music_volume_slider_value_changed"]
 [connection signal="value_changed" from="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer2/Volume Slider" to="." method="_on_talking_volume_slider_value_changed"]
 [connection signal="pressed" from="CanvasLayer/SettingsUI/VFlowContainer/HFlowContainer2/TalkingVolumeTest" to="." method="_on_talking_volume_test_pressed"]
 [connection signal="pressed" from="CanvasLayer/SettingsUI/VFlowContainer/SettingsBackButton" to="." method="_on_settings_back_button_pressed"]

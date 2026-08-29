@@ -29,7 +29,8 @@ func save_progress(save_file, data):
 func save_settings(save_file, data):
 	data["sound_settings"] = {
 		"master": int(db_to_linear(AudioServer.get_bus_volume_db(0)) * 100),
-		"talking": int(db_to_linear(AudioServer.get_bus_volume_db(1)) * 100)
+		"talking": int(db_to_linear(AudioServer.get_bus_volume_db(1)) * 100),
+		"music": int(db_to_linear(AudioServer.get_bus_volume_db(2)) * 100)
 		}
 	
 func load_game():
@@ -51,3 +52,5 @@ func load_settings(data):
 			SoundManager.set_master_volume(sound_settings["master"])
 		if sound_settings.has("talking"):
 			SoundManager.set_talk_volume(sound_settings["talking"])
+		if sound_settings.has("music"):
+			SoundManager.set_music_volume(sound_settings["music"])

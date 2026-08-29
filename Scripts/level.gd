@@ -75,6 +75,7 @@ func _on_button_pressed() -> void:
 
 func _on_start_button_pressed():
 	classroom.exam_in_progress = true
+	SoundManager.stop_music()
 	await countdown_to_exam_start()
 	remaining_exam_time = exam_time_seconds
 	set_timer_text(remaining_exam_time)

@@ -23,6 +23,10 @@ const POSSIBLE_TALK_SOUNDS := [MEE, MEEP, MEEP2, MEEP_SMOL, MEEP_MERP]
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	add_to_group("SoundManager")
+	$MusicPlayer.finished.connect(_on_music_finished)
+	
+func _on_music_finished():
+	start_music()
 
 func _on_request_sound(sound, pos, bus = 0, duration = -1, random_start = false):
 	var player = create_stream_player(pos)
@@ -60,10 +64,16 @@ func connect_player_delete_to_finished(player, sound):
 	player.finished.connect(_on_player_finished.bind(player))
 	
 func set_master_volume(volume):
+	print("Set master vol: ", volume)
 	set_bus_volume(0, volume)
 	
 func set_talk_volume(volume):
+	print("Set talk vol: ", volume)
 	set_bus_volume(1, volume)
+	
+func set_music_volume(volume):
+	print("Set music vol: ", volume)
+	set_bus_volume(2, volume)
 	
 func set_bus_volume(bus, volume):
 	AudioServer.set_bus_volume_db(bus, linear_to_db(volume/100))
@@ -86,4 +96,10 @@ func play_all_sounds(all_sounds, bus = 0):
 		await player.finished
 	remove_child(player)
 	player.queue_free()
+	
+func start_music():
+	$MusicPlayer.play()
+	
+func stop_music():
+	$MusicPlayer.stop()
 	

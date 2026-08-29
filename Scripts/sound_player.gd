@@ -21,3 +21,6 @@ func connect_sound_request_signal(sound_manager):
 
 func play_sound(sound, pos = get_viewport_rect().size / 2, bus = 0):
 	request_sound.emit(sound, pos, bus)
+	
+func play_sound_for_time(sound, time, pos = get_viewport_rect().size / 2, bus = 0):
+	request_sound.emit(sound, pos, bus, time)

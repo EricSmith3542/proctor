@@ -17,11 +17,14 @@ var ticks_remaining := 0
 func _on_timer_clicked():
 	timer_started.emit()
 	ticks_remaining = time_seconds
+	
+	play_sound_for_time(SoundManager.WIND_CLOCK, COUNTDOWN_SECONDS)
 	var hand_tween = create_tween()
 	hand_tween.tween_property(hand, "rotation", deg_to_rad(0), COUNTDOWN_SECONDS)
 	hand_tween.tween_callback(button_down)
 	
 func button_down():
+	play_sound(SoundManager.CLICK)
 	var button_tween = create_tween()
 	button_tween.tween_property(button, "position", button.position + Vector2(0, BUTTON_DOWN_DISTANCE), .05)
 	tick_down()
@@ -32,6 +35,7 @@ func tick_down():
 	tick_tween.tween_callback(finish_and_start_new_tick)
 	
 func finish_and_start_new_tick():
+	play_sound(SoundManager.CLICK)
 	await get_tree().create_timer(.8).timeout
 	ticks_remaining -= 1
 	if ticks_remaining > 0:

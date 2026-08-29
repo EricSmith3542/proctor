@@ -15,27 +15,12 @@ outline_size = 2
 outline_color = Color(0, 0, 0, 1)
 
 [node name="Level" type="Node2D" unique_id=2072235442]
+z_index = -4
 script = ExtResource("1_rnfvs")
 level_number = -1
 exam_time_seconds = 10
 
 [node name="Classroom" parent="." unique_id=1353106248 instance=ExtResource("2_m7m8v")]
-number_of_students = null
-rows_of_desks = null
-cols_of_desks = null
-fixed_cheat_time_seconds = null
-action_wave_frequency = null
-action_wave_jitter = null
-cheat_frequency = null
-max_actions_per_wave = null
-min_actions_per_wave = null
-allowed_actions = null
-action_slot_time_seconds = null
-action_slots_per_cheat = null
-max_paired_action_slot_spread = null
-strategies = null
-min_cheat_separation_slots = null
-min_non_cheat_separation_slots = null
 
 [node name="ExamSecondTimer" type="Timer" parent="." unique_id=286506423]
 

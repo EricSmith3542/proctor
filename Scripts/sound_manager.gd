@@ -15,6 +15,8 @@ const MEEP = preload("res://Sounds/Meep.wav")
 const MEEP_SMOL = preload("res://Sounds/Smol Meep.wav")
 const MEEP2 = preload("res://Sounds/Meep 2.wav")
 const MEEP_MERP = preload("res://Sounds/Meep Merp.wav")
+const WIND_CLOCK = preload("res://Sounds/WindClock.wav")
+const CLICK = preload("res://Sounds/Click.wav")
 
 const POSSIBLE_TALK_SOUNDS := [MEE, MEEP, MEEP2, MEEP_SMOL, MEEP_MERP]
 
@@ -31,7 +33,7 @@ func _on_request_sound(sound, pos, bus = 0, duration = -1, random_start = false)
 		player.finished.connect(_on_player_finished.bind(player))
 	else:
 		var temp_timer = get_tree().create_timer(duration)
-		temp_timer.timeout.connect(_on_player_finished(player))
+		temp_timer.timeout.connect(_on_player_finished.bind(player))
 		
 	add_child(player)
 	
@@ -67,7 +69,7 @@ func set_bus_volume(bus, volume):
 	AudioServer.set_bus_volume_db(bus, linear_to_db(volume/100))
 	
 func play_all_sounds_sequential():
-	var all_sounds = [AWW, HEY, LAUGH, SUCCESS, FAIL, COUGH]
+	var all_sounds = [AWW, HEY, LAUGH, SUCCESS, FAIL, COUGH, WIND_CLOCK, CLICK]
 	await play_all_sounds(all_sounds)
 	play_all_talk_sounds()
 	
